@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Disney Lorcana TCG - Tutorial Interattivo (Capitolo 1)</title>
+  <title>Disney Lorcana TCG - Accademia per Illuminieri (Tutorial Interattivo Completo)</title>
   <!-- Tailwind CSS via CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -14,22 +14,34 @@
             lorcana: {
               amber: '#f59e0b',
               amethyst: '#9333ea',
-              ink: '#0f172a',
-              gold: '#eab308',
-              cardbg: '#1e293b'
+              emerald: '#10b981',
+              ruby: '#ef4444',
+              sapphire: '#0284c7',
+              steel: '#64748b',
+              gold: '#eab308'
             }
           },
           animation: {
-            'pulse-gold': 'pulseGold 2s infinite',
-            'float': 'float 3s ease-in-out infinite'
+            'pulse-gold': 'pulseGold 1.8s infinite',
+            'float': 'float 3.5s ease-in-out infinite',
+            'glow-cyan': 'glowCyan 2s infinite',
+            'bounce-subtle': 'bounceSubtle 2s infinite'
           },
           keyframes: {
             pulseGold: {
               '0%, 100%': { boxShadow: '0 0 15px rgba(234, 179, 8, 0.6), inset 0 0 10px rgba(234, 179, 8, 0.4)' },
-              '50%': { boxShadow: '0 0 30px rgba(234, 179, 8, 0.9), inset 0 0 20px rgba(234, 179, 8, 0.7)' }
+              '50%': { boxShadow: '0 0 32px rgba(234, 179, 8, 0.95), inset 0 0 20px rgba(234, 179, 8, 0.7)' }
+            },
+            glowCyan: {
+              '0%, 100%': { boxShadow: '0 0 14px rgba(56, 189, 248, 0.7)' },
+              '50%': { boxShadow: '0 0 28px rgba(56, 189, 248, 1)' }
             },
             float: {
               '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-4px)' }
+            },
+            bounceSubtle: {
+              '0%, 100%': { transform: 'translateY(0)' },
               '50%': { transform: 'translateY(-6px)' }
             }
           }
@@ -38,54 +50,73 @@
     }
   </script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800;900&family=Outfit:wght@300;400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Outfit:wght@300;400;500;600;700&display=swap');
 
     body {
       font-family: 'Outfit', sans-serif;
-      background: radial-gradient(circle at 50% 20%, #1e1b4b 0%, #09090b 80%);
+      background: radial-gradient(circle at 50% 12%, #1e1b4b 0%, #0c0a1d 55%, #05040a 100%);
       color: #f8fafc;
       user-select: none;
       overflow-x: hidden;
+      min-height: 100vh;
     }
 
     .font-lorcana {
       font-family: 'Cinzel', serif;
     }
 
-    /* Glow highlights for guided steps */
+    /* Evidenziazioni guidate */
     .target-highlight {
       position: relative;
       animation: pulseGold 1.5s infinite;
       z-index: 30;
       border: 3px solid #facc15 !important;
-      border-radius: 0.75rem;
+      border-radius: 0.85rem;
     }
 
-    .card-preview-hover {
+    .target-highlight-ink {
+      position: relative;
+      animation: pulseGold 1.2s infinite;
+      z-index: 35;
+      border: 3px solid #38bdf8 !important;
+      border-radius: 0.65rem;
+      cursor: pointer;
+    }
+
+    .target-highlight-choir {
+      position: relative;
+      animation: glowCyan 1.5s infinite;
+      z-index: 30;
+      border: 3px solid #38bdf8 !important;
+      border-radius: 0.85rem;
+      cursor: pointer;
+    }
+
+    .card-hover-fx {
       transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    .card-preview-hover:hover {
-      transform: translateY(-12px) scale(1.08);
+    .card-hover-fx:hover {
+      transform: translateY(-8px) scale(1.05);
       z-index: 40;
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.7), 0 8px 10px -6px rgba(234, 179, 8, 0.4);
+      box-shadow: 0 18px 24px -5px rgba(0, 0, 0, 0.8), 0 8px 12px -6px rgba(234, 179, 8, 0.4);
     }
 
-    /* Card exerted tilt */
+    /* Esaurimento / Tap carta a 90° o inclinato */
     .card-exerted {
-      transform: rotate(18deg) scale(0.95);
-      filter: brightness(0.85);
+      transform: rotate(24deg) scale(0.92);
+      filter: brightness(0.75);
       transition: transform 0.4s ease, filter 0.4s ease;
     }
 
-    /* Card drying indicator */
-    .drying-drop {
+    /* Segnalino inchiostro fresco */
+    .drying-indicator {
       position: absolute;
       top: 6px;
       right: 6px;
-      background: rgba(15, 23, 42, 0.85);
+      background: rgba(15, 23, 42, 0.9);
       border: 1px solid #38bdf8;
       border-radius: 9999px;
-      padding: 2px 6px;
+      padding: 2px 7px;
       display: flex;
       align-items: center;
       gap: 3px;
@@ -94,310 +125,452 @@
       backdrop-filter: blur(4px);
     }
 
-    /* Custom scrollbars */
-    ::-webkit-scrollbar {
-      height: 6px;
-      width: 6px;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #475569;
-      border-radius: 3px;
+    /* Segnalino danno */
+    .damage-badge {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      background: #dc2626;
+      color: white;
+      font-weight: 900;
+      font-size: 11px;
+      width: 22px;
+      height: 22px;
+      border-radius: 9999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 10px rgba(220, 38, 38, 0.8);
+      border: 1.5px solid #fecaca;
     }
   </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between">
+<body class="flex flex-col justify-between">
 
-  <!-- TOP HEADER -->
-  <header class="bg-slate-950/80 backdrop-blur border-b border-amber-500/30 px-6 py-3 flex items-center justify-between z-20">
+  <!-- TOP APP BAR -->
+  <header class="bg-slate-950/95 backdrop-blur border-b border-amber-500/30 px-4 md:px-6 py-2.5 flex items-center justify-between z-30 sticky top-0 shadow-lg">
     <div class="flex items-center gap-3">
-      <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-amber-600 to-purple-600 flex items-center justify-center shadow-lg border border-amber-300/40">
-        <span class="text-white text-lg font-bold">✨</span>
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 via-purple-600 to-indigo-600 flex items-center justify-center shadow-lg border border-amber-300/40 shrink-0">
+        <span class="text-white text-xl">✨</span>
       </div>
       <div>
-        <h1 class="font-lorcana text-lg font-bold tracking-wider text-amber-300">DISNEY LORCANA</h1>
-        <p class="text-xs text-slate-400">Tutorial Guidato • <span class="text-amber-400 font-semibold">Capitolo 1: Il Pozzo dell'Inchiostro & La Mano</span></p>
+        <div class="flex items-center gap-2">
+          <h1 class="font-lorcana text-base md:text-lg font-black tracking-widest text-amber-300">DISNEY LORCANA</h1>
+          <span class="text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 px-2 py-0.5 rounded-full">TUTORIAL UFFICIALE</span>
+        </div>
+        <p class="text-[11px] text-slate-400">Mazzo reale: <strong class="text-amber-400">Amber • Amethyst</strong> • Regole e Meccaniche TCG</p>
       </div>
     </div>
 
-    <!-- Turno e Fasi -->
-    <div class="flex items-center gap-4 bg-slate-900/90 border border-slate-700/80 rounded-xl px-4 py-1.5 shadow-inner">
-      <div class="text-xs text-slate-400">
-        Turno: <span id="currentTurnBadge" class="font-bold text-amber-400 text-sm">1</span>
-      </div>
-      <div class="h-4 w-px bg-slate-700"></div>
-      <div class="flex items-center gap-2 text-xs">
-        <span id="phaseReady" class="px-2 py-0.5 rounded font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40">READY</span>
-        <span class="text-slate-600">→</span>
-        <span id="phaseSet" class="px-2 py-0.5 rounded font-mono text-slate-500">SET</span>
-        <span class="text-slate-600">→</span>
-        <span id="phaseDraw" class="px-2 py-0.5 rounded font-mono text-slate-500">DRAW</span>
-      </div>
-      <div class="h-4 w-px bg-slate-700"></div>
-      <div class="text-xs flex items-center gap-1.5 text-amber-200">
-        <span>Mazzo:</span>
-        <span class="font-bold text-white bg-slate-800 px-2 py-0.5 rounded text-xs border border-slate-700">Amber • Amethyst</span>
-      </div>
-    </div>
-
-    <!-- Restart / Audio controls -->
-    <div class="flex items-center gap-2">
-      <button id="toggleAudioBtn" class="px-3 py-1.5 text-xs bg-slate-900 hover:bg-slate-800 border border-slate-700 rounded-lg text-slate-300 flex items-center gap-1.5 transition">
-        <span>🔊</span> Audio: <span id="audioStatusText" class="text-emerald-400 font-bold">ON</span>
+    <!-- SELETTORE CAPITOLI DESKTOP -->
+    <div class="hidden lg:flex items-center gap-1 bg-slate-900/90 border border-slate-800 p-1 rounded-xl">
+      <button onclick="switchChapter(1)" id="chTab1" class="px-2.5 py-1 rounded-lg text-xs font-bold transition flex items-center gap-1 bg-amber-500 text-slate-950 shadow">
+        <span>1.</span> Inkwell & Mano
       </button>
-      <button id="restartTutorialBtn" class="px-3 py-1.5 text-xs bg-amber-950/40 hover:bg-amber-900/60 border border-amber-500/40 rounded-lg text-amber-200 flex items-center gap-1 transition">
-        <span>↺</span> Ricomincia
+      <button onclick="switchChapter(2)" id="chTab2" class="px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition flex items-center gap-1">
+        <span>2.</span> Lore & Missioni
+      </button>
+      <button onclick="switchChapter(3)" id="chTab3" class="px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition flex items-center gap-1">
+        <span>3.</span> Sfide & Danni
+      </button>
+      <button onclick="switchChapter(4)" id="chTab4" class="px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition flex items-center gap-1">
+        <span>4.</span> Azioni & Canzoni
+      </button>
+      <button onclick="switchChapter(5)" id="chTab5" class="px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition flex items-center gap-1">
+        <span>5.</span> I Luoghi (Locations)
+      </button>
+    </div>
+
+    <!-- CONTROLLI E AUDIO -->
+    <div class="flex items-center gap-2">
+      <select id="mobileChSelect" onchange="switchChapter(Number(this.value))" class="lg:hidden text-xs bg-slate-900 border border-slate-700 text-amber-300 rounded-lg px-2 py-1">
+        <option value="1">Cap 1: Inkwell & Mano</option>
+        <option value="2">Cap 2: Lore & Missioni</option>
+        <option value="3">Cap 3: Sfide & Danni</option>
+        <option value="4">Cap 4: Azioni & Canzoni</option>
+        <option value="5">Cap 5: Luoghi (Locations)</option>
+      </select>
+      
+      <button id="toggleAudioBtn" class="px-2.5 py-1 text-xs bg-slate-900 hover:bg-slate-800 border border-slate-700 rounded-lg text-slate-300 flex items-center gap-1 transition">
+        <span>🔊</span> <span id="audioStatusText" class="text-emerald-400 font-bold">ON</span>
+      </button>
+      <button onclick="restartCurrentChapter()" class="px-2.5 py-1 text-xs bg-amber-950/40 hover:bg-amber-900/60 border border-amber-500/40 rounded-lg text-amber-200 transition">
+        ↺ Reset
       </button>
     </div>
   </header>
 
-  <!-- MAIN PLAYMAT (Tavolo di Gioco) -->
-  <main class="flex-1 flex flex-col justify-between p-4 max-w-7xl mx-auto w-full relative">
+  <!-- MAIN PLAYMAT CONTAINER -->
+  <main class="flex-1 flex flex-col justify-between p-3 md:p-5 max-w-7xl mx-auto w-full relative">
 
-    <!-- TUTOR / ILLUMINIERE ASSISTANT BANNER (GUIDA DINAMICA) -->
-    <div id="tutorBanner" class="relative z-30 mb-3 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 border-2 border-amber-500/60 rounded-2xl p-4 shadow-2xl flex items-start gap-4 animate-float">
-      <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-400 to-purple-600 p-0.5 shadow-xl shrink-0 flex items-center justify-center">
-        <div class="w-full h-full bg-slate-900 rounded-[14px] flex flex-col items-center justify-center text-center">
-          <span class="text-2xl">🧙‍♂️</span>
-          <span class="text-[9px] font-bold text-amber-400 uppercase tracking-tighter">Illuminiere</span>
+    <!-- TUTOR BANNER (GUIDA DINAMICA) -->
+    <div id="tutorBanner" class="relative z-20 mb-3 bg-gradient-to-r from-slate-950 via-indigo-950/90 to-slate-950 border-2 border-amber-500/50 rounded-2xl p-3.5 shadow-2xl flex items-start gap-3.5 animate-float">
+      <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-400 via-purple-500 to-indigo-600 p-0.5 shadow-xl shrink-0 flex items-center justify-center">
+        <div class="w-full h-full bg-slate-950 rounded-[10px] flex flex-col items-center justify-center">
+          <span class="text-xl">🧙‍♂️</span>
+          <span class="text-[8px] font-bold text-amber-400 uppercase tracking-tighter">Guida</span>
         </div>
       </div>
-      <div class="flex-1">
+      <div class="flex-1 min-w-0">
         <div class="flex items-center justify-between">
-          <h2 id="tutorTitle" class="font-lorcana text-amber-300 font-bold text-sm tracking-wide">PASSO 1: Riconoscere l'Inchiostro Magico</h2>
-          <span id="stepCounter" class="text-xs bg-amber-500/20 text-amber-300 px-2.5 py-0.5 rounded-full border border-amber-500/30 font-semibold">Passo 1 di 5</span>
+          <h2 id="tutorTitle" class="font-lorcana text-amber-300 font-bold text-xs md:text-sm tracking-wide truncate">
+            PASSO 1: Riconoscere l'Inchiostro Magico
+          </h2>
+          <span id="stepCounter" class="text-[11px] bg-amber-500/20 text-amber-300 px-2.5 py-0.5 rounded-full border border-amber-500/30 font-semibold shrink-0">
+            Passo 1 di 5
+          </span>
         </div>
-        <p id="tutorSpeech" class="text-sm text-slate-200 mt-1 leading-relaxed">
-          Benvenuto nel regno di Lorcana! Per evocare i tuoi alleati ti servirà dell'<strong class="text-amber-300">Inchiostro (Ink)</strong>. 
-          Osserva le carte nella tua mano: solo quelle con la <strong class="text-amber-300">spirale decorata attorno al costo</strong> possono essere inchiostrate! 
-          <strong>Clicca sulla lente d'ingrandimento</strong> o su una carta per confrontarle.
+        <p id="tutorSpeech" class="text-xs md:text-sm text-slate-200 mt-1 leading-relaxed">
+          Benvenuto nel regno di Lorcana! In questo primo capitolo imparerai a gestire la tua risorsa più preziosa: l'<strong class="text-amber-300">Inchiostro (Ink)</strong>.
         </p>
-        <div id="tutorActionHint" class="mt-2.5 text-xs font-semibold text-amber-400 flex items-center gap-2 bg-amber-500/10 border border-amber-500/30 px-3 py-1.5 rounded-lg w-fit">
-          <span>👉</span> <span id="hintText">Obiettivo: Clicca su "Qua" o "Qui" per scoprire la differenza tra carte Inchiostrabili e Non Inchiostrabili.</span>
+        <div id="tutorActionHint" class="mt-2 text-xs font-semibold text-amber-400 flex items-center gap-1.5 bg-amber-500/10 border border-amber-500/30 px-2.5 py-1 rounded-lg w-fit">
+          <span>👉</span> <span id="hintText">Obiettivo: Clicca su una carta in mano per analizzarla.</span>
         </div>
       </div>
-      <button id="nextStepBtn" class="hidden shrink-0 self-center px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-xs uppercase tracking-wider transition shadow-lg shadow-amber-500/30">
-        Continua →
-      </button>
     </div>
 
-    <!-- AREA DEL TAVOLO (CAMPO DI GIOCO & INKWELL) -->
-    <div class="grid grid-cols-12 gap-4 flex-1 items-stretch min-h-[360px]">
-      
-      <!-- LATO SINISTRO: IL POZZO DELL'INCHIOSTRO (INKWELL) & MAZZO -->
-      <div class="col-span-3 flex flex-col gap-3">
+    <!-- BANNER MODALITÀ PAGAMENTO INCHIOSTRO (TAPPA MANA) -->
+    <div id="payInkBanner" class="hidden mb-3 bg-gradient-to-r from-amber-950/90 to-slate-950/90 border-2 border-amber-400 rounded-2xl p-3 shadow-2xl flex items-center justify-between animate-pulse">
+      <div class="flex items-center gap-3">
+        <span class="text-2xl">🖋️</span>
+        <div>
+          <h4 class="font-lorcana text-xs md:text-sm font-bold text-amber-300">PAGAMENTO INCHIOSTRO IN CORSO</h4>
+          <p id="payInkInstruction" class="text-[11px] text-slate-300">Clicca sugli inchiostri pronti nel tuo Inkwell a sinistra per esaurirli/tapparli!</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="bg-slate-950 px-3 py-1.5 rounded-xl border border-amber-400/50 flex items-center gap-1.5 text-xs">
+          <span class="text-slate-400">Inchiostri Tappati:</span>
+          <span id="payInkTappedText" class="font-lorcana text-base font-black text-amber-300">0</span>
+          <span class="text-slate-500">/</span>
+          <span id="payInkNeededText" class="text-sm font-bold text-white">1</span>
+        </div>
+        <button onclick="cancelInkPayment()" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700">
+          Annulla
+        </button>
+      </div>
+    </div>
+
+    <!-- BANNER CANTARE INSIEME (CORO) -->
+    <div id="singTogetherChoirBox" class="hidden mb-3 bg-gradient-to-r from-purple-950/90 to-sky-950/90 border-2 border-sky-400 rounded-2xl p-3 shadow-2xl flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <span class="text-2xl animate-bounce">🎤</span>
+        <div>
+          <h4 class="font-lorcana text-xs md:text-sm font-bold text-sky-300">CANTARE INSIEME 9 IN CORO</h4>
+          <p class="text-[11px] text-slate-300">Clicca sui tuoi personaggi pronti per esaurirli/tapparli e raggiungere 9 di costo!</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <div class="bg-slate-950 px-3 py-1.5 rounded-xl border border-sky-400/50 flex items-center gap-1.5 text-xs">
+          <span class="text-slate-400">Costo nel Coro:</span>
+          <span id="choirCostAccumulated" class="font-lorcana text-base font-black text-sky-300">0</span>
+          <span class="text-slate-500">/</span>
+          <span class="text-sm font-bold text-amber-400">9</span>
+        </div>
+        <button id="executeChoirSongBtn" disabled class="px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider bg-slate-800 text-slate-500 border border-slate-700 cursor-not-allowed transition">
+          Scatena Canzone in Coro ➔
+        </button>
+      </div>
+    </div>
+
+    <!-- AREA SUPERIORE: AVVERSARIO (CAPITOLI 3, 4, 5) -->
+    <div id="opponentArea" class="hidden mb-3 bg-rose-950/20 border border-rose-900/40 rounded-2xl p-3">
+      <div class="flex items-center justify-between border-b border-rose-900/30 pb-1.5 mb-2">
+        <div class="flex items-center gap-2">
+          <span class="text-base">👹</span>
+          <span class="font-lorcana text-xs font-bold text-rose-300">CAMPO AVVERSARIO (OPPONENT)</span>
+          <span class="text-[10px] text-slate-400">Lore nemica: <strong id="oppLoreText" class="text-rose-400">5 / 20</strong></span>
+        </div>
+        <div class="text-[10px] text-slate-400">
+          💡 <span class="text-amber-300">Regola:</span> Puoi sfidare <strong>SOLO</strong> i personaggi avversari esauriti (inclinati)!
+        </div>
+      </div>
+      <div id="opponentBattlefield" class="flex items-center justify-center gap-4 py-1 min-h-[120px]">
+        <!-- Personaggi avversari -->
+      </div>
+    </div>
+
+    <!-- ZONA CENTRALE: INKWELL, CAMPO DI GIOCO E ZONA LUOGHI -->
+    <div class="grid grid-cols-12 gap-3.5 flex-1 items-stretch min-h-[300px]">
+
+      <!-- COLONNA SINISTRA: POZZO DELL'INCHIOSTRO (INKWELL) & MAZZO -->
+      <div class="col-span-12 md:col-span-3 flex flex-col gap-3">
         
-        <!-- INKWELL ZONE -->
-        <div id="inkwellZone" class="flex-1 bg-slate-900/70 border-2 border-slate-700/80 rounded-2xl p-4 flex flex-col justify-between transition-all duration-300 relative overflow-hidden backdrop-blur">
-          <div class="flex items-center justify-between border-b border-slate-800 pb-2">
-            <div class="flex items-center gap-2">
-              <span class="text-xl">🖋️</span>
+        <!-- INKWELL BOX -->
+        <div id="inkwellZone" class="flex-1 bg-slate-900/80 border-2 border-slate-700/80 rounded-2xl p-3 flex flex-col justify-between backdrop-blur transition-all">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-1.5">
+            <div class="flex items-center gap-1.5">
+              <span class="text-base">🖋️</span>
               <div>
-                <h3 class="font-lorcana text-xs font-bold tracking-wider text-slate-300">POZZO DELL'INCHIOSTRO</h3>
-                <p class="text-[10px] text-slate-500">Carte a faccia in giù (Mana permanente)</p>
+                <h3 class="font-lorcana text-xs font-bold text-slate-200">INKWELL</h3>
+                <p class="text-[9px] text-slate-400">Pozzo dell'Inchiostro</p>
               </div>
             </div>
-            <!-- Contatore Inkwell -->
-            <div class="flex items-center gap-1.5 bg-slate-950 border border-amber-500/40 px-2.5 py-1 rounded-xl">
-              <span class="text-xs text-slate-400">Disponibile:</span>
-              <span id="inkAvailableText" class="font-lorcana text-base font-bold text-amber-400">0</span>
-              <span class="text-xs text-slate-500">/</span>
+            <div class="flex items-center gap-1 bg-slate-950 border border-amber-500/40 px-2 py-0.5 rounded-lg">
+              <span class="text-[11px] text-slate-400">Disponibile:</span>
+              <span id="inkAvailableText" class="font-lorcana text-sm font-bold text-amber-400">0</span>
+              <span class="text-slate-600 text-xs">/</span>
               <span id="inkTotalText" class="text-xs font-semibold text-slate-400">0</span>
             </div>
           </div>
 
-          <!-- Pila visiva dell'Inkwell -->
-          <div id="inkwellCardsContainer" class="flex-1 flex flex-wrap items-center justify-center gap-2 py-4 min-h-[140px]">
-            <div id="inkwellEmptyPlaceholder" class="text-center text-slate-500 text-xs italic flex flex-col items-center">
-              <div class="w-16 h-24 border-2 border-dashed border-slate-700 rounded-xl mb-1 flex items-center justify-center text-slate-600 text-lg">
-                🖋️
-              </div>
-              Nessun inchiostro.<br>Posiziona qui 1 carta per turno.
-            </div>
+          <!-- Carte nell'Inkwell -->
+          <div id="inkwellCardsContainer" class="flex-1 flex flex-wrap items-center justify-center gap-2 py-3 min-h-[100px]">
+            <!-- Carte inchiostro -->
           </div>
 
-          <!-- Bottone di Inchiostrazione rapida se carta selezionata -->
-          <div id="inkActionContainer" class="hidden">
-            <button id="confirmInkBtn" class="w-full py-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-xs uppercase tracking-wider rounded-xl shadow-lg transition">
-              Inchiostra questa Carta (A faccia in giù)
-            </button>
+          <div class="text-[10px] text-slate-400 text-center italic border-t border-slate-800 pt-1.5">
+            1 carta per turno • Entra PRONTA e si usa subito!
           </div>
         </div>
 
-        <!-- MAZZO & SCARTI (DECK & DISCARD) -->
-        <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-3 flex items-center justify-between">
-          <div class="flex items-center gap-2.5">
-            <div class="relative w-11 h-15 rounded-lg overflow-hidden border border-amber-500/30 shadow">
-              <img src="Il Regno di Jafar/official_images_it/dorso-lorcana-ufficiale.jpg" alt="Dorso Mazzo" class="w-full h-full object-cover">
+        <!-- MAZZO & LORE -->
+        <div class="bg-slate-900/70 border border-slate-800 rounded-2xl p-2.5 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-11 rounded border border-amber-500/30 overflow-hidden shadow">
+              <img src="cards/dorso.jpg" alt="Dorso" class="w-full h-full object-cover">
             </div>
             <div>
-              <div class="text-xs font-bold text-slate-300">Mazzo Giocatore</div>
-              <div class="text-[10px] text-slate-500"><span id="deckCountText">53</span> Carte rimanenti</div>
+              <div class="text-[11px] font-bold text-slate-300">Mazzo</div>
+              <div class="text-[9px] text-slate-500"><span id="deckCountText">53</span> carte</div>
             </div>
           </div>
           <div class="text-right">
-            <div class="text-[10px] text-slate-500">Scarti: <span id="discardCountText" class="font-bold text-slate-300">0</span></div>
-            <div class="text-[10px] text-amber-400 font-semibold">Leggenda: <span id="loreCountText" class="font-bold text-white text-xs">0 / 20</span> 🏆</div>
+            <div class="text-[10px] text-slate-400">Obiettivo Vittoria:</div>
+            <div class="font-lorcana text-xs font-black text-amber-300">
+              <span id="loreCountText">0</span> / 20 <span class="text-sm">🏆</span>
+            </div>
           </div>
         </div>
 
       </div>
 
-      <!-- LATO CENTRALE / DESTRO: IL CAMPO DI GIOCO (PLAY AREA) -->
-      <div id="playAreaZone" class="col-span-9 bg-slate-900/40 border-2 border-slate-800/80 rounded-2xl p-4 flex flex-col justify-between relative backdrop-blur transition-all duration-300">
+      <!-- COLONNA CENTRALE / DESTRA: CAMPO DI BATTAGLIA & ZONA LUOGHI -->
+      <div id="playAreaZone" class="col-span-12 md:col-span-9 bg-slate-900/50 border-2 border-slate-800 rounded-2xl p-3 flex flex-col justify-between backdrop-blur transition-all">
         
-        <div class="flex items-center justify-between border-b border-slate-800/60 pb-2">
+        <!-- Header del Campo -->
+        <div class="flex items-center justify-between border-b border-slate-800/80 pb-1.5">
           <div class="flex items-center gap-2">
-            <span class="text-xl">⚔️</span>
+            <span class="text-base">⚔️</span>
             <div>
-              <h3 class="font-lorcana text-xs font-bold tracking-wider text-slate-300">CAMPO DI GIOCO (PLAY AREA)</h3>
-              <p class="text-[10px] text-slate-500">I tuoi Personaggi, Luoghi e Oggetti in prima linea</p>
+              <h3 class="font-lorcana text-xs font-bold text-slate-200">CAMPO DI GIOCO (PLAY AREA)</h3>
+              <p class="text-[10px] text-slate-400">I tuoi Personaggi alleati e Luoghi stabili</p>
             </div>
           </div>
-          <div id="playAreaNotice" class="text-xs text-slate-400 flex items-center gap-1.5">
-            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-            Pronto a ospitare i tuoi personaggi
+          <div class="flex items-center gap-3 text-xs">
+            <div class="flex items-center gap-1.5 text-slate-400 text-[11px]">
+              Turno: <strong id="currentTurnBadge" class="text-amber-400">1</strong>
+            </div>
+            <div class="flex items-center gap-1 text-[10px]">
+              <span id="phaseReady" class="px-1.5 py-0.5 rounded font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40">READY</span>
+              <span class="text-slate-600">→</span>
+              <span id="phaseSet" class="px-1.5 py-0.5 rounded font-mono text-slate-500">SET</span>
+              <span class="text-slate-600">→</span>
+              <span id="phaseDraw" class="px-1.5 py-0.5 rounded font-mono text-slate-500">DRAW</span>
+            </div>
           </div>
         </div>
 
-        <!-- Slot Personaggi evocati -->
-        <div id="battlefieldContainer" class="flex-1 flex items-center justify-center gap-6 py-4 flex-wrap min-h-[220px]">
-          <div id="battlefieldEmptyNotice" class="text-center text-slate-600 text-xs flex flex-col items-center">
-            <div class="w-24 h-34 border-2 border-dashed border-slate-800 rounded-xl mb-2 flex items-center justify-center text-slate-700 text-2xl">
-              ⚔️
-            </div>
-            Nessun personaggio in campo.<br>Paga l'inchiostro necessario per evocarli qui.
+        <!-- ZONA LUOGHI (CAPITOLO 5) -->
+        <div id="locationArea" class="hidden my-2 p-2.5 rounded-xl bg-sky-950/30 border border-sky-500/40">
+          <div class="flex items-center justify-between text-[11px] font-bold text-sky-300 mb-1.5">
+            <span class="flex items-center gap-1.5"><span>🏛️</span> ZONA LUOGHI (LOCATIONS)</span>
+            <span class="text-[10px] text-slate-300">Genera Lore passiva ogni turno durante la fase SET!</span>
+          </div>
+          <div id="locationSlots" class="flex items-center justify-center gap-4 flex-wrap">
+            <!-- Luogo con carta orizzontale reale -->
           </div>
         </div>
 
-        <!-- Barra di Azioni turno -->
-        <div class="flex items-center justify-between border-t border-slate-800/60 pt-3">
-          <div class="text-xs text-slate-400 flex items-center gap-3">
-            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-amber-400 inline-block"></span> Inchiostrabile</span>
-            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-slate-500 inline-block"></span> Non Inchiostrabile</span>
-            <span class="flex items-center gap-1"><span class="text-sky-400 text-xs">💧</span> Inchiostro Fresco (Drying)</span>
+        <!-- CONTENITORE PERSONAGGI SUL CAMPO -->
+        <div id="battlefieldContainer" class="flex-1 flex items-center justify-center gap-3.5 py-3 flex-wrap min-h-[170px]">
+          <!-- Personaggi giocati -->
+        </div>
+
+        <!-- FOOTER AZIONI E CONTROLLI TURNO -->
+        <div class="flex items-center justify-between border-t border-slate-800/80 pt-2 mt-2">
+          <div class="text-[10px] text-slate-400 flex items-center gap-2.5">
+            <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-amber-400 inline-block"></span> Inkable</span>
+            <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-slate-500 inline-block"></span> Non-Inkable</span>
+            <span class="flex items-center gap-1"><span class="text-sky-400">💧</span> Inchiostro Fresco</span>
           </div>
 
-          <button id="endTurnBtn" disabled class="px-5 py-2 rounded-xl text-xs font-bold uppercase tracking-wider bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700 transition flex items-center gap-2">
-            <span>Passa il Turno</span> <span>➔</span>
-          </button>
+          <div class="flex items-center gap-2">
+            <button id="endTurnBtn" disabled class="px-4 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wider bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700 transition flex items-center gap-1.5">
+              <span>Passa il Turno</span> <span>➔</span>
+            </button>
+          </div>
         </div>
 
       </div>
 
     </div>
 
-    <!-- AREA IN BASSO: LA MANO DEL GIOCATORE (HAND AREA) -->
-    <div id="handZone" class="mt-4 bg-slate-950/80 border-2 border-slate-800 rounded-2xl p-3 transition-all duration-300">
-      <div class="flex items-center justify-between px-2 mb-2">
+    <!-- ZONA INFERIORE: LA MANO DEL GIOCATORE (HAND ZONE) -->
+    <div id="handZone" class="mt-3 bg-slate-950/85 border-2 border-slate-800 rounded-2xl p-2.5 transition-all">
+      <div class="flex items-center justify-between px-2 mb-1.5">
         <div class="flex items-center gap-2">
-          <span class="text-base">🎴</span>
+          <span class="text-sm">🎴</span>
           <span class="font-lorcana text-xs font-bold text-slate-300">LA TUA MANO</span>
-          <span class="text-[11px] text-slate-500">(<span id="handCountText">5</span> carte • Clicca per selezionare o ingrandire)</span>
+          <span class="text-[10px] text-slate-500">(<span id="handCountText">5</span> carte)</span>
         </div>
-        <div id="handHelpTooltip" class="text-xs text-amber-400/90 font-medium animate-pulse">
-          Seleziona una carta per decidere se inchiostrarla o giocarla
+        <div id="handHelpTooltip" class="text-xs text-amber-400 font-medium">
+          Clicca su una carta per esaminarla, inchiostrarla o giocarla
         </div>
       </div>
 
-      <!-- Carte in Mano (Scroll orizzontale elastico) -->
-      <div id="cardsHandContainer" class="flex items-end justify-center gap-3 py-2 overflow-x-auto min-h-[170px]">
-        <!-- Inserite dinamicamente da JS -->
+      <div id="cardsHandContainer" class="flex items-end justify-center gap-2.5 py-1.5 overflow-x-auto min-h-[150px]">
+        <!-- Carte della mano -->
       </div>
     </div>
 
   </main>
 
-  <!-- CARD INSPECT / ZOOM MODAL -->
+  <!-- MODALE SFIDA / DUELLO ELEGANTE (COMBAT DECISION POPUP) -->
+  <div id="battleModal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-gradient-to-b from-slate-900 to-rose-950 border-2 border-rose-500/80 rounded-3xl max-w-xl w-full p-6 shadow-2xl relative text-center">
+      <button onclick="closeBattleModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold flex items-center justify-center border border-slate-700">✕</button>
+
+      <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-rose-500/20 border border-rose-500 text-2xl mb-2 shadow-lg shadow-rose-500/30">
+        ⚔️
+      </div>
+      <h3 class="font-lorcana text-lg md:text-xl font-bold text-rose-300">DICHIARAZIONE DI SFIDA (CHALLENGE)</h3>
+      <p class="text-xs text-slate-300 mt-1">Stai per sfidare un personaggio avversario esaurito. Entrambi si infliggeranno danno simultaneo!</p>
+
+      <!-- Confronto Due Carte -->
+      <div class="grid grid-cols-5 gap-3 items-center my-4 bg-slate-950/80 p-3.5 rounded-2xl border border-rose-900/50">
+        <!-- Tuo Sfidante -->
+        <div class="col-span-2 flex flex-col items-center">
+          <span class="text-[10px] font-bold text-amber-400 uppercase tracking-wider mb-1">Tuo Sfidante</span>
+          <div class="w-24 rounded-lg overflow-hidden border border-amber-400 shadow">
+            <img id="battleAttackerImg" src="" alt="Sfidante" class="w-full h-auto">
+          </div>
+          <div id="battleAttackerStats" class="mt-1.5 text-xs font-bold text-slate-200">⚔️ 2 • 🛡️ 3</div>
+        </div>
+
+        <!-- VS Icon -->
+        <div class="col-span-1 flex flex-col items-center">
+          <span class="font-lorcana text-xl font-black text-rose-400 animate-pulse">VS</span>
+          <span class="text-[9px] text-slate-500 uppercase mt-1">Danno Simultaneo</span>
+        </div>
+
+        <!-- Difensore Bersaglio -->
+        <div class="col-span-2 flex flex-col items-center">
+          <span class="text-[10px] font-bold text-rose-400 uppercase tracking-wider mb-1">Bersaglio Esaurito</span>
+          <div class="w-24 rounded-lg overflow-hidden border border-rose-400 shadow">
+            <img id="battleDefenderImg" src="" alt="Difensore" class="w-full h-auto">
+          </div>
+          <div id="battleDefenderStats" class="mt-1.5 text-xs font-bold text-slate-200">⚔️ 4 • 🛡️ 3</div>
+        </div>
+      </div>
+
+      <!-- Spiegazione Matematica Scontro -->
+      <div id="battleExplanation" class="text-xs text-slate-300 bg-slate-900/80 p-3 rounded-xl border border-slate-800 text-left space-y-1">
+        <!-- Testo dinamico -->
+      </div>
+
+      <div class="flex gap-3 mt-4">
+        <button onclick="closeBattleModal()" class="flex-1 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs uppercase tracking-wider transition">
+          Annulla
+        </button>
+        <button id="confirmBattleBtn" class="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-rose-600 to-rose-500 hover:from-rose-500 hover:to-rose-400 text-white font-extrabold text-xs uppercase tracking-wider shadow-lg shadow-rose-600/40 transition">
+          ⚔️ Scatena la Sfida!
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION DI GIOCO ELEGANTE (NON INVASIVA) -->
+  <div id="gameToast" class="hidden fixed bottom-6 right-6 z-50 bg-slate-900 border-2 border-amber-400/90 text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-3 transition-all">
+    <span id="toastIcon" class="text-xl">ℹ️</span>
+    <div id="toastMessage" class="text-xs font-medium">Messaggio</div>
+  </div>
+
+  <!-- MODALE INGRANDIMENTO CARTA (INSPECT & ACTION POPUP) -->
   <div id="inspectModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-slate-900 border-2 border-amber-500/70 rounded-3xl max-w-2xl w-full p-6 shadow-2xl relative flex flex-col md:flex-row gap-6">
-      <button id="closeInspectBtn" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold flex items-center justify-center border border-slate-700">✕</button>
+    <div class="bg-slate-900 border-2 border-amber-500/70 rounded-3xl max-w-2xl w-full p-5 shadow-2xl relative flex flex-col md:flex-row gap-5">
+      <button onclick="closeInspect()" class="absolute top-3.5 right-3.5 w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold flex items-center justify-center border border-slate-700">✕</button>
       
-      <div class="w-60 shrink-0 mx-auto rounded-2xl overflow-hidden shadow-2xl border-2 border-amber-500/30">
+      <div class="w-56 shrink-0 mx-auto rounded-2xl overflow-hidden shadow-2xl border-2 border-amber-500/30">
         <img id="modalCardImg" src="" alt="Carta Ingrandita" class="w-full h-auto">
       </div>
 
       <div class="flex-1 flex flex-col justify-between">
         <div>
-          <div class="flex items-center gap-2 mb-1">
-            <span id="modalInkBadge" class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40">INCHIOSTRABILE</span>
-            <span id="modalCostBadge" class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700">Costo: 3</span>
+          <div class="flex items-center gap-2 mb-1 flex-wrap">
+            <span id="modalInkBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40">INCHIOSTRABILE</span>
+            <span id="modalTypeBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700">Personaggio</span>
+            <span id="modalCostBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700">Costo: 3</span>
           </div>
-          <h3 id="modalCardTitle" class="font-lorcana text-xl font-bold text-amber-300">Nome Carta</h3>
-          <p id="modalCardSubtitle" class="text-xs text-slate-400 font-medium">Sottotitolo / Versione</p>
+          <h3 id="modalCardTitle" class="font-lorcana text-lg font-bold text-amber-300">Nome Carta</h3>
+          <p id="modalCardSubtitle" class="text-xs text-slate-400 font-medium">Sottotitolo</p>
 
-          <div class="mt-4 p-3 bg-slate-950/70 rounded-xl border border-slate-800 text-xs text-slate-300 space-y-2">
+          <div class="mt-3 p-3 bg-slate-950/80 rounded-xl border border-slate-800 text-xs space-y-2">
             <div>
               <strong class="text-amber-400">Regola Inchiostro:</strong>
-              <p id="modalInkExplanation" class="text-slate-400 mt-0.5"></p>
+              <p id="modalInkExplanation" class="text-slate-300 mt-0.5"></p>
             </div>
             <div>
-              <strong class="text-amber-400">Dettagli di Gioco:</strong>
-              <p id="modalStatsExplanation" class="text-slate-400 mt-0.5"></p>
+              <strong class="text-amber-400">Abilità e Statistiche:</strong>
+              <p id="modalStatsExplanation" class="text-slate-300 mt-0.5"></p>
             </div>
           </div>
         </div>
 
-        <div id="modalActionButtons" class="flex gap-2 mt-4 pt-3 border-t border-slate-800">
-          <button id="modalActionInkBtn" class="flex-1 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs uppercase tracking-wider transition">
-            🖋️ Metti nell'Inkwell
+        <div id="modalActionButtons" class="flex flex-col gap-2 mt-4 pt-3 border-t border-slate-800">
+          <div class="flex gap-2">
+            <button id="modalActionInkBtn" class="flex-1 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs uppercase tracking-wider transition">
+              🖋️ Metti nell'Inkwell
+            </button>
+            <button id="modalActionPlayBtn" class="flex-1 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs uppercase tracking-wider transition">
+              ⚔️ Gioca Carta
+            </button>
+          </div>
+          <button id="modalActionMoveToLocationBtn" class="hidden w-full py-2 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs uppercase tracking-wider transition shadow-lg">
+            🥾 Sposta nel Luogo (Paga 1 Inchiostro)
           </button>
-          <button id="modalActionPlayBtn" class="flex-1 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs uppercase tracking-wider transition">
-            ⚔️ Gioca in Campo
+          <button id="modalActionSingBtn" class="hidden w-full py-2 rounded-xl bg-pink-600 hover:bg-pink-500 text-white font-bold text-xs uppercase tracking-wider transition">
+            🎵 Canta Gratis (Sing for Free)
+          </button>
+          <button id="modalActionSingTogetherBtn" class="hidden w-full py-2 rounded-xl bg-gradient-to-r from-purple-600 to-sky-500 hover:from-purple-500 hover:to-sky-400 text-white font-bold text-xs uppercase tracking-wider transition shadow-lg">
+            🎤 Cantare Insieme (in Coro)
           </button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- COMPLETION DIALOG (FINE CAPITOLO 1) -->
+  <!-- COMPLETION DIALOG (FINE CAPITOLO) -->
   <div id="completionModal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
-    <div class="bg-gradient-to-b from-slate-900 to-indigo-950 border-2 border-amber-400 rounded-3xl max-w-xl w-full p-8 shadow-2xl text-center relative">
-      <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-amber-400/20 border-2 border-amber-400 flex items-center justify-center text-4xl shadow-lg shadow-amber-400/20">
+    <div class="bg-gradient-to-b from-slate-900 to-indigo-950 border-2 border-amber-400 rounded-3xl max-w-lg w-full p-6 shadow-2xl text-center relative">
+      <div class="w-16 h-16 mx-auto mb-3 rounded-full bg-amber-400/20 border-2 border-amber-400 flex items-center justify-center text-3xl shadow-lg shadow-amber-400/20">
         🏆
       </div>
-      <h2 class="font-lorcana text-2xl font-black text-amber-300 tracking-wide">CAPITOLO 1 COMPLETATO!</h2>
-      <p class="text-slate-300 text-sm mt-2 leading-relaxed">
-        Complimenti, Illuminiere! Hai padroneggiato le fondamenta del gioco di carte di Lorcana:
+      <h2 id="completeChapterTitle" class="font-lorcana text-xl font-black text-amber-300 tracking-wide">CAPITOLO COMPLETATO!</h2>
+      <p id="completeChapterSubtitle" class="text-slate-300 text-xs mt-1.5 leading-relaxed">
+        Hai padroneggiato con successo queste regole di Disney Lorcana.
       </p>
 
-      <div class="text-left bg-slate-950/80 rounded-2xl p-4 my-5 border border-slate-800 space-y-2.5 text-xs text-slate-300">
-        <div class="flex items-start gap-2">
-          <span class="text-emerald-400 font-bold">✓</span>
-          <span><strong>Simbolo Inchiostrabile:</strong> Solo le carte con il bordo dorato decorato possono andare nell'Inkwell.</span>
-        </div>
-        <div class="flex items-start gap-2">
-          <span class="text-emerald-400 font-bold">✓</span>
-          <span><strong>Limite Turno:</strong> Puoi inchiostrare al massimo 1 sola carta per ogni tuo turno.</span>
-        </div>
-        <div class="flex items-start gap-2">
-          <span class="text-emerald-400 font-bold">✓</span>
-          <span><strong>Permanenza:</strong> Le carte nell'Inkwell rimangono a faccia in giù per tutta la partita come risorsa.</span>
-        </div>
-        <div class="flex items-start gap-2">
-          <span class="text-emerald-400 font-bold">✓</span>
-          <span><strong>Inchiostro Fresco (Drying):</strong> I personaggi appena giocati devono asciugarsi e possono agire dal turno successivo!</span>
-        </div>
-        <div class="flex items-start gap-2">
-          <span class="text-emerald-400 font-bold">✓</span>
-          <span><strong>Inizio Turno (Ready, Set, Draw):</strong> Prepara l'inchiostro usato, risolvi gli effetti e pesca 1 carta.</span>
-        </div>
+      <div id="completeChapterSummary" class="text-left bg-slate-950/80 rounded-2xl p-3.5 my-4 border border-slate-800 space-y-2 text-xs text-slate-300">
+        <!-- Punti riepilogativi -->
       </div>
 
-      <div class="flex items-center justify-center gap-3">
-        <button id="modalRestartBtn" class="px-5 py-2.5 rounded-xl border border-slate-700 bg-slate-900 hover:bg-slate-800 text-xs font-bold text-slate-300 uppercase tracking-wider transition">
-          Rigioca Capitolo 1
+      <div class="flex items-center justify-center gap-2.5">
+        <button onclick="restartCurrentChapter()" class="px-4 py-2 rounded-xl border border-slate-700 bg-slate-900 hover:bg-slate-800 text-xs font-bold text-slate-300 uppercase tracking-wider transition">
+          ↺ Rigioca
         </button>
-        <button onclick="alert('Il Capitolo 2 (Missioni per Lore & Sfide) verrà aggiunto a breve!')" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-slate-950 text-xs font-extrabold uppercase tracking-wider shadow-lg shadow-amber-500/30 transition">
-          Prosegui al Capitolo 2 →
+        <button id="nextChapterBtn" onclick="advanceNextChapter()" class="px-5 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-slate-950 text-xs font-extrabold uppercase tracking-wider shadow-lg shadow-amber-500/30 transition">
+          Prossimo Capitolo →
         </button>
       </div>
     </div>
   </div>
 
-  <!-- JAVASCRIPT DELLA LOGICA DI TUTORIAL -->
+  <!-- LOGICA JAVASCRIPT POTENZIATA -->
   <script>
-    // --- DATABASE DELLE CARTE UTILIZZATE (Dal Mazzo Starter Amber / Amethyst) ---
-    const CARDS_DB = {
+    // --- DATABASE CARTE CON PATH UNIVERSALI IN 'cards/...' ---
+    const CARDS = {
       charlotte: {
         id: 'charlotte',
         name: 'Charlotte La Bouff',
@@ -408,10 +581,9 @@
         strength: 1,
         willpower: 3,
         lore: 1,
-        color: 'Amber',
-        image: 'Il Regno di Jafar/official_images_it/card_8_204_IT_8_1672.jpg',
-        inkRule: 'Ha il cerchio dorato ornato attorno al costo 1: PUÒ essere messa nel Pozzo dell\'Inchiostro.',
-        statsRule: 'Costa 1 inchiostro. Ha 1 Forza, 3 Volontà e genera 1 Lore quando va in missione.'
+        image: 'cards/charlotte.jpg',
+        inkRule: 'Cerchio dorato ornato: PUÒ essere messa nell\'Inkwell.',
+        statsRule: 'Costo 1 • Forza 1 • Volontà 3 • Lore 1.'
       },
       qui: {
         id: 'qui',
@@ -423,10 +595,9 @@
         strength: 2,
         willpower: 3,
         lore: 1,
-        color: 'Amber',
-        image: 'Il Regno di Jafar/official_images_it/card_3_204_IT_8_1667.jpg',
-        inkRule: 'Ha un cerchio esagonale liscio SENZA fregi dorati: NON può essere inchiostrata. Può essere solo giocata in campo pagando 2 inchiostri!',
-        statsRule: 'Costa 2 inchiostri per essere evocato. Abilità "Conosco la Strada": quando va in missione riduce il costo del prossimo personaggio di 1.'
+        image: 'cards/qui.jpg',
+        inkRule: 'Bordo liscio SENZA fregi: NON è inchiostrabile. Si gioca solo pagando 2 inchiostri!',
+        statsRule: 'Costo 2 • Forza 2 • Volontà 3 • Lore 1. Abilità "Conosco la Strada": andare in missione riduce di 1 il costo del prossimo personaggio!'
       },
       qua: {
         id: 'qua',
@@ -438,10 +609,23 @@
         strength: 2,
         willpower: 3,
         lore: 2,
-        color: 'Amber',
-        image: 'Il Regno di Jafar/official_images_it/card_1_204_IT_8_1665.jpg',
-        inkRule: 'Ha il cerchio dorato ornato attorno al costo 3: PUÒ essere trasformato in inchiostro!',
-        statsRule: 'Costa 3 inchiostri. Ottimo valore di 2 Lore!'
+        image: 'cards/qua.jpg',
+        inkRule: 'Cerchio dorato ornato: PUÒ essere inchiostrato.',
+        statsRule: 'Costo 3 • Forza 2 • Volontà 3 • Lore 2! Genera 2 punti Leggenda per ogni missione.'
+      },
+      quo: {
+        id: 'quo',
+        name: 'Quo',
+        subtitle: 'Amabile Spaccone',
+        cost: 4,
+        inkable: true,
+        type: 'Personaggio',
+        strength: 4,
+        willpower: 4,
+        lore: 1,
+        image: 'cards/quo.jpg',
+        inkRule: 'Inchiostrabile.',
+        statsRule: 'Costo 4 • Forza 4 • Volontà 4 • Lore 1.'
       },
       giaguaro: {
         id: 'giaguaro',
@@ -453,10 +637,23 @@
         strength: 1,
         willpower: 4,
         lore: 1,
-        color: 'Amber',
-        image: 'Il Regno di Jafar/official_images_it/card_31_204_IT_8_1695.jpg',
-        inkRule: 'Ha il cerchio dorato ornato attorno al costo 2: PUÒ essere messo nel Pozzo dell\'Inchiostro.',
-        statsRule: 'Costa 2 inchiostri. Ha 4 di Volontà ed eccellente difesa.'
+        image: 'cards/giaguaro.jpg',
+        inkRule: 'Inchiostrabile! Ha la spirale decorata.',
+        statsRule: 'Costo 2 • Forza 1 • Volontà 4.'
+      },
+      clawhauser: {
+        id: 'clawhauser',
+        name: 'Clawhauser',
+        subtitle: 'Ufficiale dell\'Accettazione',
+        cost: 3,
+        inkable: true,
+        type: 'Personaggio',
+        strength: 1,
+        willpower: 4,
+        lore: 2,
+        image: 'cards/clawhauser.jpg',
+        inkRule: 'Inchiostrabile!',
+        statsRule: 'Abilità GUARDIANO: protegge gli alleati costringendo il nemico a sfidare lui! Abilità MELODIOSO 4: conta come costo 4 per cantare canzoni!'
       },
       tiana: {
         id: 'tiana',
@@ -468,35 +665,119 @@
         strength: 2,
         willpower: 4,
         lore: 1,
-        color: 'Amber',
-        image: 'Il Regno di Jafar/official_images_it/card_9_204_IT_8_1673.jpg',
-        inkRule: 'Cerchio liscio senza fregi: NON è inchiostrabile. Costa 4 per essere giocata.',
-        statsRule: 'Canzoniere potente con abilità Melodioso 6.'
+        image: 'cards/tiana.jpg',
+        inkRule: 'NON inchiostrabile. Costa 4 per entrare in gioco.',
+        statsRule: 'Abilità MELODIOSO 6: può cantare gratis canzoni che costano fino a 6 inchiostri!'
       },
-      canzone: {
-        id: 'canzone',
+      bruno: {
+        id: 'bruno',
+        name: 'Bruno Madrigal',
+        subtitle: 'Determinato',
+        cost: 4,
+        inkable: true,
+        type: 'Personaggio',
+        strength: 3,
+        willpower: 4,
+        lore: 1,
+        image: 'cards/bruno.jpg',
+        inkRule: 'Inchiostrabile.',
+        statsRule: 'Costo 4 • Forza 3 • Volontà 4 • Lore 1.'
+      },
+      azione_colpo: {
+        id: 'azione_colpo',
+        name: 'Colpo Rapido',
+        subtitle: 'Azione',
+        cost: 2,
+        inkable: false,
+        type: 'Azione',
+        image: 'cards/azione_colpo_rapido.jpg',
+        inkRule: 'NON inchiostrabile. Costa 2 inchiostri.',
+        statsRule: 'Azione normale: infliggi 1 danno a un personaggio a tua scelta e pesca una carta. Dopo l\'effetto va subito negli scarti!'
+      },
+      canzone_ostacoli: {
+        id: 'canzone_ostacoli',
         name: 'Mille Ostacoli e Impedimenti',
         subtitle: 'Azione • Canzone',
         cost: 2,
         inkable: true,
-        type: 'Azione',
-        color: 'Amber',
-        image: 'Il Regno di Jafar/official_images_it/card_43_204_IT_8_1707.jpg',
-        inkRule: 'Inchiostrabile! Ha la spirale dorata attorno al costo 2.',
-        statsRule: 'Un personaggio scelto riceve -4 Forza fino all\'inizio del prossimo turno.'
+        type: 'Azione • Canzone',
+        image: 'cards/canzone_ostacoli.jpg',
+        inkRule: 'Inchiostrabile!',
+        statsRule: 'Canzone costo 2: può essere giocata con 2 inchiostri OPPURE cantata GRATIS esaltando un personaggio pronto di costo 2 o superiore!'
+      },
+      canzone_try: {
+        id: 'canzone_try',
+        name: 'Try Everything',
+        subtitle: 'Azione • Canzone',
+        cost: 4,
+        inkable: true,
+        type: 'Azione • Canzone',
+        image: 'cards/canzone_try.jpg',
+        inkRule: 'Inchiostrabile.',
+        statsRule: 'Canzone costo 4: rimuovi fino a 3 danni e prepara un personaggio. Può essere cantata gratis da un personaggio pronto con Melodioso 4 o costo 4!'
+      },
+      canzone_insieme: {
+        id: 'canzone_insieme',
+        name: 'Fantastico e Magico',
+        subtitle: 'Azione • Canzone',
+        cost: 9,
+        inkable: false,
+        type: 'Azione • Canzone',
+        image: 'cards/canzone_insieme.jpg',
+        inkRule: 'NON inchiostrabile.',
+        statsRule: 'CANTARE INSIEME 9: Qualsiasi numero di tuoi personaggi con costo TOTALE di 9 o più possono cantare insieme per giocarla a costo 0!'
+      },
+      archazia_location: {
+        id: 'archazia_location',
+        name: "L'Isola di Archazia",
+        subtitle: 'Santuario Sommerso • Luogo',
+        cost: 2,
+        moveCost: 1,
+        willpower: 6,
+        passiveLore: 2,
+        image: 'cards/archazia_location.jpg',
+        type: 'Luogo',
+        inkRule: 'Inchiostrabile! Ha la spirale decorata.',
+        statsRule: 'Carta orizzontale. Costo Movimento: 1 🥾 • Volontà: 6 🛡️ • Lore Passiva a inizio turno: 2 🏆!'
+      },
+      maga_mago: {
+        id: 'maga_mago',
+        name: 'Maga Magò',
+        subtitle: 'Con Cattive Intenzioni',
+        cost: 3,
+        type: 'Personaggio',
+        strength: 4,
+        willpower: 3,
+        lore: 1,
+        image: 'cards/maga_mago.jpg',
+        inkRule: '',
+        statsRule: 'Forza 4 • Volontà 3. È ESAURITA (inclinata), quindi PUÒ essere sfidata!'
+      },
+      gennarino: {
+        id: 'gennarino',
+        name: 'Gennarino',
+        subtitle: 'Fratello di Amelia',
+        cost: 3,
+        type: 'Personaggio',
+        strength: 3,
+        willpower: 4,
+        lore: 1,
+        image: 'cards/gennarino.jpg',
+        inkRule: '',
+        statsRule: 'Forza 3 • Volontà 4. È PRONTO (dritto), quindi è PROTETTO e NON può essere sfidato!'
       }
     };
 
-    // --- SOUND SYNTHESIZER (WEB AUDIO API) ---
-    class SoundFX {
+    // --- SOUND ENGINE ---
+    class SoundEngine {
       constructor() {
         this.enabled = true;
         this.ctx = null;
       }
       init() {
         if (!this.ctx) {
-          const AudioContext = window.AudioContext || window.webkitAudioContext;
-          if (AudioContext) this.ctx = new AudioContext();
+          const AC = window.AudioContext || window.webkitAudioContext;
+          if (AC) this.ctx = new AC();
         }
       }
       play(type) {
@@ -511,553 +792,1355 @@
           gain.connect(this.ctx.destination);
 
           if (type === 'click') {
-            osc.frequency.setValueAtTime(440, now);
-            gain.gain.setValueAtTime(0.08, now);
-            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+            osc.frequency.setValueAtTime(420, now);
+            gain.gain.setValueAtTime(0.06, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
             osc.start(now);
-            osc.stop(now + 0.08);
-          } else if (type === 'ink') {
-            // Suono magico di inchiostro
-            osc.type = 'triangle';
+            osc.stop(now + 0.06);
+          } else if (type === 'tap') {
+            osc.type = 'sawtooth';
             osc.frequency.setValueAtTime(320, now);
-            osc.frequency.exponentialRampToValueAtTime(640, now + 0.25);
-            gain.gain.setValueAtTime(0.15, now);
-            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+            osc.frequency.exponentialRampToValueAtTime(160, now + 0.16);
+            gain.gain.setValueAtTime(0.14, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.16);
             osc.start(now);
-            osc.stop(now + 0.25);
-          } else if (type === 'play') {
-            // Suono epico di carta giocata
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(260, now);
-            osc.frequency.exponentialRampToValueAtTime(520, now + 0.3);
-            gain.gain.setValueAtTime(0.2, now);
-            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
-            osc.start(now);
-            osc.stop(now + 0.35);
-          } else if (type === 'ready') {
-            // Tocco di arpa inizio turno
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(523.25, now); // C5
+            osc.stop(now + 0.16);
+          } else if (type === 'ink') {
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(330, now);
+            osc.frequency.exponentialRampToValueAtTime(660, now + 0.22);
             gain.gain.setValueAtTime(0.12, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+            osc.start(now);
+            osc.stop(now + 0.22);
+          } else if (type === 'quest') {
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(587.33, now);
+            osc.frequency.exponentialRampToValueAtTime(880, now + 0.3);
+            gain.gain.setValueAtTime(0.18, now);
             gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
             osc.start(now);
             osc.stop(now + 0.4);
-          } else if (type === 'win') {
-            // Fanfara finale
+          } else if (type === 'challenge') {
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(220, now);
+            osc.frequency.exponentialRampToValueAtTime(110, now + 0.25);
+            gain.gain.setValueAtTime(0.2, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+            osc.start(now);
+            osc.stop(now + 0.25);
+          } else if (type === 'song') {
             [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
               const o = this.ctx.createOscillator();
               const g = this.ctx.createGain();
               o.connect(g);
               g.connect(this.ctx.destination);
               o.frequency.value = freq;
-              g.gain.setValueAtTime(0.15, now + (i * 0.1));
+              g.gain.setValueAtTime(0.1, now + (i * 0.08));
+              g.gain.exponentialRampToValueAtTime(0.001, now + (i * 0.08) + 0.3);
+              o.start(now + (i * 0.08));
+              o.stop(now + (i * 0.08) + 0.3);
+            });
+          } else if (type === 'win') {
+            [440, 554.37, 659.25, 880].forEach((freq, i) => {
+              const o = this.ctx.createOscillator();
+              const g = this.ctx.createGain();
+              o.connect(g);
+              g.connect(this.ctx.destination);
+              o.frequency.value = freq;
+              g.gain.setValueAtTime(0.12, now + (i * 0.1));
               g.gain.exponentialRampToValueAtTime(0.001, now + (i * 0.1) + 0.35);
               o.start(now + (i * 0.1));
               o.stop(now + (i * 0.1) + 0.35);
             });
           }
-        } catch (e) {
-          console.warn('Audio non riproducibile:', e);
-        }
+        } catch(e) {}
       }
     }
-    const sfx = new SoundFX();
+    const sfx = new SoundEngine();
 
-    // --- STATO DELLA PARTITA ---
-    let state = {
-      turn: 1,
-      inkTotal: 0,
-      inkAvailable: 0,
-      inkedThisTurn: false,
-      hand: ['charlotte', 'qui', 'qua', 'giaguaro', 'tiana'],
-      battlefield: [],
-      inkwell: [],
-      selectedCardId: null,
-      currentStep: 1 // 1: Impara la differenza, 2: Inchiostra Qua, 3: Gioca Charlotte, 4: Concetto Drying e Passa Turno, 5: Inizio Turno 2 e gioca Qui
-    };
+    // --- NOTIFICA TOAST ELEGANTE ---
+    function showToast(msg, icon = 'ℹ️') {
+      const toast = document.getElementById('gameToast');
+      document.getElementById('toastIcon').textContent = icon;
+      document.getElementById('toastMessage').textContent = msg;
+      toast.classList.remove('hidden');
+      setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 3500);
+    }
 
-    // --- STEP DEL TUTORIAL ---
-    const STEPS = {
+    // --- STATO DEL GIOCO ---
+    let currentChapterId = 1;
+    let gameState = null;
+
+    // Struttura di pagamento inchiostro manuale
+    let paymentPending = null; // { cardId, cost, type: 'play' | 'move' | 'action', targetOpp: null }
+
+    const CHAPTERS_CONFIG = {
       1: {
-        title: "PASSO 1: Riconoscere l'Inchiostro Magico",
-        speech: "Benvenuto nel regno di Lorcana! In questo primo capitolo imparerai a gestire la tua risorsa più preziosa: l'<strong class='text-amber-300'>Inchiostro (Ink)</strong>. Guarda le carte nella tua mano in basso. Clicca su <strong>Qua</strong> o <strong>Qui</strong> per esaminarle e scoprire la fondamentale differenza tra carte inchiostrabili e non inchiostrabili!",
-        hint: "Obiettivo: Clicca su una carta in mano per ingrandirla ed esaminare il simbolo del costo in alto a sinistra.",
-        target: 'handZone',
-        allowedCardClick: ['qua', 'qui', 'charlotte', 'giaguaro', 'tiana']
+        id: 1,
+        title: "Capitolo 1: Il Pozzo dell'Inchiostro & La Mano",
+        subtitle: "Impara a distinguere le carte inchiostrabili, gestire l'Inkwell e pagare i costi tappando l'inchiostro.",
+        init: () => ({
+          turn: 1,
+          lore: 0,
+          inkTotal: 0,
+          inkAvailable: 0,
+          inkedThisTurn: false,
+          hand: ['charlotte', 'qui', 'qua', 'giaguaro', 'tiana'],
+          battlefield: [],
+          inkwell: [],
+          opponent: [],
+          locations: [],
+          step: 1,
+          mode: 'normal'
+        }),
+        steps: {
+          1: {
+            title: "PASSO 1: Riconoscere l'Inchiostro Magico",
+            speech: "In questo capitolo imparerai a gestire l'<strong class='text-amber-300'>Inchiostro (Ink)</strong>. Guarda le carte nella tua mano: clicca su <strong>Qua</strong> o <strong>Qui</strong> per esaminarle e scoprire la fondamentale differenza tra carte inchiostrabili e non inchiostrabili!",
+            hint: "Obiettivo: Clicca su 'Qua' o 'Qui' in mano per ingrandirla.",
+            target: 'handZone'
+          },
+          2: {
+            title: "PASSO 2: Aggiungi una carta all'Inkwell",
+            speech: "Bravissimo! <strong class='text-amber-300'>Qua</strong> ha la spirale dorata attorno al costo, quindi è Inchiostrabile! Ricorda: puoi inchiostrare al massimo <strong>1 sola carta per turno</strong>, e andrà a faccia in giù nel Pozzo permanente. Inchiostriamo <strong>Qua</strong> per ottenere il nostro primo punto mana!",
+            hint: "Obiettivo: Clicca su 'Qua' in mano, poi seleziona 'Metti nell\\'Inkwell'.",
+            target: 'inkwellZone'
+          },
+          3: {
+            title: "PASSO 3: Tappa il Mana per Giocare Charlotte!",
+            speech: "Hai 1 inchiostro pronto! In Lorcana per pagare i costi devi <strong>esaurire (tappare) fisicamente il tuo inchiostro</strong>.<br>Clicca su <strong class='text-amber-300'>Charlotte La Bouff</strong> (costo 1) e seleziona 'Gioca': ti verrà chiesto di <strong>tappare l'inchiostro</strong> nel tuo Inkwell!",
+            hint: "Obiettivo: Clicca su 'Charlotte' -> 'Gioca Carta' -> Clicca sull'inchiostro per esaurirlo!",
+            target: 'handZone'
+          },
+          4: {
+            title: "PASSO 4: Inchiostro Fresco (Drying) & Concludi Turno",
+            speech: "Charlotte è scesa sul campo! Nota l'icona <span class='text-sky-400 font-bold'>💧 Inchiostro Fresco (Drying)</span>: i personaggi appena giocati hanno l'inchiostro ancora bagnato e <strong>non possono agire nello stesso turno</strong>. Il tuo inchiostro è esaurito (0/1), quindi è il momento di passare il turno!",
+            hint: "Obiettivo: Clicca sul pulsante 'Passa il Turno' a destra per vedere la sequenza d'inizio turno.",
+            target: 'endTurnBtn'
+          },
+          5: {
+            title: "PASSO 5: Ready, Set, Draw & Giocare Qui!",
+            speech: "All'inizio di ogni turno avvengono 3 fasi cruciali:<br>1. <strong class='text-amber-300'>READY</strong>: l'inchiostro si raddrizza e Charlotte si asciuga!<br>2. <strong class='text-amber-300'>SET</strong>: risoluzione effetti passivi.<br>3. <strong class='text-amber-300'>DRAW</strong>: hai appena pescato una nuova carta!<br>Ora inchiostra <strong>Giaguaro di Antonio</strong> per avere 2 inchiostri e poi evoca <strong>Qui</strong> tappando i 2 inchiostri!",
+            hint: "Obiettivo: Inchiostra 'Giaguaro di Antonio' (raggiungi 2 mana) e poi evoca 'Qui'!",
+            target: null
+          }
+        },
+        summary: [
+          "<strong>Simbolo Inchiostrabile:</strong> Solo le carte con il bordo dorato decorato possono andare nell'Inkwell.",
+          "<strong>Limite Turno:</strong> Puoi inchiostrare al massimo 1 sola carta per ogni tuo turno.",
+          "<strong>Disponibile Subito:</strong> L'inchiostro messo nel calamaio è pronto e spendibile nello stesso turno!",
+          "<strong>Tappaggio Mana:</strong> Per pagare i costi si esauriscono (tappano) le carte nel calamaio.",
+          "<strong>Inchiostro Fresco (Drying):</strong> I personaggi appena giocati devono asciugarsi e agiscono dal turno dopo."
+        ]
       },
+
       2: {
-        title: "PASSO 2: Aggiungi una carta all'Inkwell",
-        speech: "Bravissimo! <strong class='text-amber-300'>Qua</strong> ha la spirale dorata attorno al costo, quindi è Inchiostrabile! Ricorda: puoi inchiostrare al massimo <strong>1 sola carta per turno</strong>, e andrà a faccia in giù nel Pozzo permanente. Inchiostriamo <strong>Qua</strong> per ottenere il nostro primo punto mana!",
-        hint: "Obiettivo: Clicca su 'Qua' in mano, poi clicca su 'Metti nell\\'Inkwell'.",
-        target: 'inkwellZone',
-        allowedCardClick: ['qua']
+        id: 2,
+        title: "Capitolo 2: La Corsa alla Leggenda (Questing & Lore)",
+        subtitle: "Scopri come vincere la partita mandando i tuoi personaggi all'avventura per accumulare Lore.",
+        init: () => ({
+          turn: 2,
+          lore: 17,
+          inkTotal: 3,
+          inkAvailable: 3,
+          inkedThisTurn: true,
+          hand: ['canzone_ostacoli'],
+          battlefield: [
+            { cardId: 'charlotte', exerted: false, drying: false, damage: 0 },
+            { cardId: 'qua', exerted: false, drying: false, damage: 0 }
+          ],
+          inkwell: [
+            { cardId: 'giaguaro', exerted: false },
+            { cardId: 'qui', exerted: false },
+            { cardId: 'tiana', exerted: false }
+          ],
+          opponent: [],
+          locations: [],
+          step: 1,
+          mode: 'normal'
+        }),
+        steps: {
+          1: {
+            title: "PASSO 1: L'Obiettivo di Vittoria (20 Lore)",
+            speech: "In Disney Lorcana non si azzera la vita dell'avversario: l'obiettivo è essere il primo a <strong>raccogliere 20 punti Leggenda (Lore 🏆)</strong>! Sei attualmente a <strong>17/20 Lore</strong>. Sul campo hai <strong class='text-amber-300'>Charlotte</strong> (1 Lore) e <strong class='text-amber-300'>Qua</strong> (2 Lore), entrambi pronti!",
+            hint: "Obiettivo: Clicca su Charlotte sul campo di gioco per mandarla in Missione (Quest).",
+            target: 'battlefieldContainer'
+          },
+          2: {
+            title: "PASSO 2: Andare all'Avventura (Questing)",
+            speech: "Quando invii un personaggio in Missione (<strong class='text-amber-300'>Quest</strong>), la carta si <strong>esaurisce (ruota a 90°)</strong> e ottieni punti Leggenda pari ai simboli rombo! Charlotte ti ha dato 1 Lore (ora sei a 18). Ora manda in missione anche <strong class='text-amber-300'>Qua</strong> (2 Lore) per vincere la partita!",
+            hint: "Obiettivo: Clicca su Qua sul campo e seleziona 'Invia in Missione (+2 Lore)'.",
+            target: 'battlefieldContainer'
+          }
+        },
+        summary: [
+          "<strong>Condizione di Vittoria:</strong> Il primo giocatore a raggiungere 20 Lore vince immediatamente la partita!",
+          "<strong>Andare in Missione (Quest):</strong> Esaurisci (tappi) un qualsiasi tuo personaggio pronto per guadagnare la sua Lore.",
+          "<strong>Valore di Lore:</strong> Ogni personaggio ha un valore specifico (da 1 a 4+ simboli rombo).",
+          "<strong>Vulnerabilità:</strong> Un personaggio esaurito dopo la missione diventa vulnerabile alle sfide nemiche!"
+        ]
       },
+
       3: {
-        title: "PASSO 3: Evoca il tuo primo Personaggio",
-        speech: "Fantastico! Ora hai <strong>1 Inchiostro pronto all'uso</strong> nel tuo Inkwell (indicato in alto). Per giocare una carta devi esaurire (ruotare) l'inchiostro corrispondente al suo costo. Tra le carte in mano, <strong class='text-amber-300'>Charlotte La Bouff</strong> costa esattamente 1! Clicca su Charlotte e giocala in campo!",
-        hint: "Obiettivo: Clicca su 'Charlotte La Bouff' e seleziona 'Gioca in Campo'.",
-        target: 'playAreaZone',
-        allowedCardClick: ['charlotte']
+        id: 3,
+        title: "Capitolo 3: Sfide e Combattimento (Challenges & Banish)",
+        subtitle: "Impara la regola aurea delle sfide, il danno permanente e l'abilità Guardiano (Bodyguard).",
+        init: () => ({
+          turn: 3,
+          lore: 5,
+          inkTotal: 4,
+          inkAvailable: 4,
+          inkedThisTurn: true,
+          hand: ['clawhauser'],
+          battlefield: [
+            { cardId: 'qua', exerted: false, drying: false, damage: 0 }
+          ],
+          inkwell: [
+            { cardId: 'giaguaro', exerted: false },
+            { cardId: 'charlotte', exerted: false },
+            { cardId: 'qui', exerted: false },
+            { cardId: 'tiana', exerted: false }
+          ],
+          opponent: [
+            { cardId: 'maga_mago', exerted: true, damage: 2 },
+            { cardId: 'gennarino', exerted: false, damage: 0 }
+          ],
+          locations: [],
+          step: 1,
+          mode: 'normal'
+        }),
+        steps: {
+          1: {
+            title: "PASSO 1: La Regola d'Oro delle Sfide",
+            speech: "Guarda il campo avversario in alto! C'è <strong class='text-rose-400'>Maga Magò</strong> (esaurita a 90°) e <strong class='text-slate-300'>Gennarino</strong> (pronto e dritto). In Lorcana c'è una regola d'oro assoluta: <strong>puoi sfidare SOLO i personaggi avversari esauriti!</strong> I personaggi pronti non possono essere toccati. Clicca su Qua per avviare la sfida contro Maga Magò!",
+            hint: "Obiettivo: Clicca su 'Qua' sul tuo campo per aprire la schermata di sfida.",
+            target: 'battlefieldContainer'
+          },
+          2: {
+            title: "PASSO 2: Danno Simultaneo e Bando (Banish)",
+            speech: "Entrambi i personaggi si sono inflitti danno simultaneamente pari alla loro <strong class='text-amber-300'>Forza (⚔️)</strong>! Maga Magò ha raggiunto 4 danni su 3 di Volontà ed è stata <strong class='text-rose-400'>Bandita</strong>.<br>Ora gioca dalla tua mano <strong class='text-amber-300'>Clawhauser</strong> (costo 3) per imparare a difenderti!",
+            hint: "Obiettivo: Clicca su Clawhauser in mano, seleziona 'Gioca' e tappa i 3 inchiostri.",
+            target: 'handZone'
+          },
+          3: {
+            title: "PASSO 3: L'Abilità Guardiano (Bodyguard)",
+            speech: "Clawhauser possiede l'abilità chiave <strong class='text-amber-300'>Guardiano (Bodyguard)</strong>: costringe l'avversario a sfidare lui per primo se vuole attaccare i tuoi alleati! Uno scudo indispensabile per proteggere chi fa Quest!",
+            hint: "Obiettivo: Esamina Clawhauser per concludere il capitolo 3.",
+            target: null
+          }
+        },
+        summary: [
+          "<strong>Regola d'Oro:</strong> Puoi sfidare solo i personaggi avversari ESAURITI (exerted). Quelli pronti sono al sicuro.",
+          "<strong>Danno Simultaneo:</strong> Entrambi i contendenti infliggono la propria Forza alla Volontà dell'altro contemporaneamente.",
+          "<strong>Danno Permanente:</strong> I danni rimangono sui personaggi sotto forma di segnalini fino alla fine della partita.",
+          "<strong>Bando (Banish):</strong> Quando il danno è pari o superiore alla Volontà, il personaggio va negli scarti.",
+          "<strong>Guardiano (Bodyguard):</strong> I personaggi con Guardiano intercettano gli attacchi e proteggono gli altri alleati."
+        ]
       },
+
       4: {
-        title: "PASSO 4: Inchiostro Fresco (Drying) & Concludi Turno",
-        speech: "Charlotte è scesa sul campo! Nota l'icona con la goccia d'acqua <span class='text-sky-400 font-bold'>💧 Inchiostro Fresco (Drying)</span>: i personaggi appena giocati hanno l'inchiostro ancora bagnato e <strong>non possono agire nello stesso turno</strong>. Il tuo inchiostro è esaurito (0/1), quindi è il momento di passare il turno!",
-        hint: "Obiettivo: Clicca sul pulsante 'Passa il Turno' a destra per vedere la sequenza d'inizio turno.",
-        target: 'endTurnBtn',
-        allowedCardClick: []
+        id: 4,
+        title: "Capitolo 4: Azioni Normali, Canzoni & Cantare Insieme",
+        subtitle: "Lanciare un'Azione, cantare a costo zero, Melodioso (Singer) e Cantare Insieme (in coro) con tappaggio manuale!",
+        init: () => ({
+          turn: 4,
+          lore: 10,
+          inkTotal: 4,
+          inkAvailable: 4,
+          inkedThisTurn: true,
+          hand: ['azione_colpo', 'canzone_ostacoli', 'canzone_try', 'canzone_insieme'],
+          // SUL CAMPO:
+          // Qui (costo 2, pronto)
+          // Clawhauser (costo 3, Melodioso 4, pronto)
+          // Tiana (costo 4, pronta)
+          // Bruno (costo 4, pronto)
+          // Charlotte (costo 1, pronta)
+          battlefield: [
+            { cardId: 'qui', exerted: false, drying: false, damage: 0 },
+            { cardId: 'clawhauser', exerted: false, drying: false, damage: 0 },
+            { cardId: 'tiana', exerted: false, drying: false, damage: 0 },
+            { cardId: 'bruno', exerted: false, drying: false, damage: 0 },
+            { cardId: 'charlotte', exerted: false, drying: false, damage: 0 }
+          ],
+          inkwell: [
+            { cardId: 'qua', exerted: false },
+            { cardId: 'quo', exerted: false },
+            { cardId: 'giaguaro', exerted: false },
+            { cardId: 'gennarino', exerted: false }
+          ],
+          opponent: [
+            { cardId: 'maga_mago', exerted: true, damage: 0 }
+          ],
+          locations: [],
+          step: 1,
+          mode: 'normal',
+          choirSelectedIds: []
+        }),
+        steps: {
+          1: {
+            title: "PASSO 1: Le Azioni Normali (One-Shot)",
+            speech: "Iniziamo con un'<strong class='text-amber-300'>Azione Normale</strong>! In mano hai <strong class='text-amber-300'>Colpo Rapido</strong> (costo 2 inchiostri). Le Azioni non entrano sul campo: paghi 2 inchiostri, scegli il bersaglio, applichi l'effetto (1 danno a Maga Magò e peschi 1 carta) e la carta va subito negli scarti!",
+            hint: "Obiettivo: Clicca su 'Colpo Rapido' in mano -> seleziona 'Lancia Azione' -> tappa 2 inchiostri!",
+            target: 'handZone'
+          },
+          2: {
+            title: "PASSO 2: Cantare una Canzone Gratis (Tappando 1 Personaggio)",
+            speech: "Le <strong class='text-amber-300'>Canzoni (Songs)</strong> sono Azioni speciali che puoi cantare <strong>A COSTO ZERO</strong> invece di pagare inchiostro!<br>Clicca su <strong class='text-amber-300'>Mille Ostacoli</strong> (costo 2): seleziona 'Canta Gratis' e poi <strong>CLICCA DIRETTAMENTE su Qui (costo 2) sul campo per esaurirlo/tapparlo!</strong>",
+            hint: "Obiettivo: Clicca su 'Mille Ostacoli' -> 'Canta Gratis' -> Clicca su 'Qui' per farlo cantare!",
+            target: 'handZone'
+          },
+          3: {
+            title: "PASSO 3: L'Abilità Melodioso (Singer)",
+            speech: "Qui si è esaurito e la canzone è stata cantata gratis!<br>Ora guarda <strong class='text-amber-300'>Try Everything</strong>: costa 4. Chi può cantarla? <strong class='text-amber-300'>Clawhauser</strong> ha costo 3, MA possiede <strong class='text-amber-300'>Melodioso 4 (Singer 4)</strong>! Clicca su 'Try Everything' e poi clicca su Clawhauser per farlo cantare!",
+            hint: "Obiettivo: Clicca su 'Try Everything' -> 'Canta Gratis' -> Clicca su 'Clawhauser' (pronto) per tapparlo!",
+            target: 'handZone'
+          },
+          4: {
+            title: "PASSO 4: Cantare Insieme 9 in Coro!",
+            speech: "Ed ecco la meccanica regina: <strong class='text-amber-300'>Fantastico e Magico</strong> costa 9 inchiostri e ha <strong class='text-sky-300'>Cantare Insieme 9 (Sing Together)</strong>!<br>In coro puoi sommare i costi: <strong>Tappa le tue 3 creature rimaste pronte (Tiana da 4 + Bruno da 4 + Charlotte da 1 = 9!)</strong> per raggiungere 9/9 ed eseguire il brano!",
+            hint: "Obiettivo: Clicca su 'Fantastico e Magico' -> 'Cantare Insieme' -> Tappa le 3 creature pronte!",
+            target: 'handZone'
+          }
+        },
+        summary: [
+          "<strong>Azioni Normali:</strong> Paghi inchiostro, applichi l'effetto e scarti subito la carta.",
+          "<strong>Cantare Gratis:</strong> Tappi (esaurisci) 1 personaggio PRONTO con costo ≥ al costo della canzone per giocarla a costo 0.",
+          "<strong>Creature già esaurite:</strong> Non possono cantare se sono già tappate!",
+          "<strong>Melodioso X (Singer X):</strong> Il personaggio conta come costo X per cantare brani più costosi del suo valore.",
+          "<strong>Cantare Insieme (Sing Together):</strong> Più personaggi uniscono le loro voci: si tappano insieme sommando i rispettivi costi per cantare in coro!"
+        ]
       },
+
       5: {
-        title: "PASSO 5: Nuovo Turno: Ready, Set, Draw!",
-        speech: "Hai visto cosa è successo? All'inizio di ogni turno avvengono 3 fasi cruciali:<br>1. <strong class='text-amber-300'>READY</strong>: L'inchiostro usato torna dritto ed è riutilizzabile, e Charlotte si è asciugata!<br>2. <strong class='text-amber-300'>SET</strong>: Si verificano gli effetti passivi.<br>3. <strong class='text-amber-300'>DRAW</strong>: Hai appena pescato una nuova carta (Mille Ostacoli)!<br>Ora inchiostra <strong>Giaguaro di Antonio</strong> per avere 2 inchiostri e poi evoca <strong>Qui</strong>!",
-        hint: "Obiettivo: Inchiostra 'Giaguaro di Antonio', poi gioca 'Qui' spendendo i 2 inchiostri!",
-        target: null,
-        allowedCardClick: ['giaguaro', 'qui', 'canzone']
+        id: 5,
+        title: "Capitolo 5: I Luoghi (Locations & Movimento)",
+        subtitle: "Come funzionano le carte orizzontali dei Luoghi, il costo di movimento e la rendita passiva di Lore a ogni inizio turno.",
+        init: () => ({
+          turn: 5,
+          lore: 12,
+          inkTotal: 4,
+          inkAvailable: 4,
+          inkedThisTurn: true,
+          // Iniziamo con l'Isola di Archazia IN MANO così l'utente impara a evocarla pagando mana!
+          hand: ['archazia_location', 'charlotte'],
+          battlefield: [
+            { cardId: 'qui', exerted: false, drying: false, damage: 0 }
+          ],
+          inkwell: [
+            { cardId: 'giaguaro', exerted: false },
+            { cardId: 'tiana', exerted: false },
+            { cardId: 'clawhauser', exerted: false },
+            { cardId: 'canzone_ostacoli', exerted: false }
+          ],
+          opponent: [
+            { cardId: 'maga_mago', exerted: false, damage: 0 }
+          ],
+          locations: [], // Verrà giocata dall'utente!
+          step: 1,
+          mode: 'normal'
+        }),
+        steps: {
+          1: {
+            title: "PASSO 1: Evocare un Luogo (Location)",
+            speech: "I <strong class='text-sky-300'>Luoghi (Locations)</strong> sono carte orizzontali stabili! In mano hai la carta ufficiale <strong class='text-sky-300'>L'Isola di Archazia - Santuario Sommerso</strong> (costo 2 inchiostri). A differenza delle azioni, i Luoghi rimangono sul terreno per l'intera partita!<br>Clicca su 'L'Isola di Archazia' in mano e seleziona 'Gioca Luogo' (tappando 2 inchiostri)!",
+            hint: "Obiettivo: Clicca su 'L'Isola di Archazia' in mano -> 'Gioca Carta' -> Tappa 2 inchiostri nell'Inkwell!",
+            target: 'handZone'
+          },
+          2: {
+            title: "PASSO 2: I 3 Valori del Luogo & Spostare un Personaggio",
+            speech: "Guarda l'Isola di Archazia sul campo! Ha 3 valori fondamentali:<br>1. <strong class='text-sky-300'>Costo di Movimento (🥾 1)</strong>: spendi 1 inchiostro per spostare un tuo personaggio qui.<br>2. <strong class='text-emerald-300'>Volontà (🛡️ 6)</strong>: i punti ferita prima che venga distrutta.<br>3. <strong class='text-amber-300'>Lore Passiva (🏆 2)</strong>: genera 2 Lore da sola ogni inizio turno!<br>Ora clicca su <strong>Qui</strong> sul tuo campo e seleziona <strong>'Sposta nel Luogo'</strong> pagando 1 inchiostro!",
+            hint: "Obiettivo: Clicca su 'Qui' sul campo -> 'Sposta nel Luogo' -> Tappa 1 inchiostro!",
+            target: 'battlefieldContainer'
+          },
+          3: {
+            title: "PASSO 3: Rendita Passiva di Lore (Fase SET) & Sfida ai Luoghi",
+            speech: "Nota una regola cruciale: <strong>Qui si è spostato nel Luogo MA RIMANE PRONTO</strong> (non si esaurisce per muoversi)!<br>Ora clicca su <strong>Passa il Turno</strong> per osservare la magia: all'inizio del turno, nella fase <strong class='text-purple-300'>SET</strong>, l'Isola di Archazia ti accrediterà automaticamente <strong>+2 Lore</strong> (da 12 a 14) senza dover fare Quest!<br><em class='text-slate-300'>Nota: I Luoghi non hanno Forza (⚔️). Se l'avversario li sfida, subiscono danni alla Volontà ma non rispondono con danno di ritorno!</em>",
+            hint: "Obiettivo: Clicca su 'Passa il Turno' per assistere all'accredito automatico della Lore!",
+            target: 'endTurnBtn'
+          }
+        },
+        summary: [
+          "<strong>Orientamento Orizzontale:</strong> I Luoghi entrano in gioco pronti e rimangono sul terreno per sempre.",
+          "<strong>Lore Passiva:</strong> All'inizio di ogni tuo turno, nella fase SET, ogni tuo Luogo ti fa guadagnare automaticamente i suoi punti Lore!",
+          "<strong>Costo di Movimento (🥾):</strong> Pagando l'inchiostro indicato, puoi spostare personaggi all'interno del Luogo (il personaggio non si esaurisce!).",
+          "<strong>Sfida ai Luoghi:</strong> L'avversario può sfidare i tuoi Luoghi per infliggere danni alla loro Volontà (🛡️) e bandirli.",
+          "<strong>Nessun Danno di Ritorno:</strong> I Luoghi non hanno Forza (⚔️), quindi chi li sfida non subisce danni di ritorno."
+        ]
       }
     };
 
-    // --- ELEMENTI DOM ---
-    const tutorTitle = document.getElementById('tutorTitle');
-    const tutorSpeech = document.getElementById('tutorSpeech');
-    const hintText = document.getElementById('hintText');
-    const stepCounter = document.getElementById('stepCounter');
-    const cardsHandContainer = document.getElementById('cardsHandContainer');
-    const inkwellCardsContainer = document.getElementById('inkwellCardsContainer');
-    const battlefieldContainer = document.getElementById('battlefieldContainer');
-    const inkAvailableText = document.getElementById('inkAvailableText');
-    const inkTotalText = document.getElementById('inkTotalText');
-    const currentTurnBadge = document.getElementById('currentTurnBadge');
-    const handCountText = document.getElementById('handCountText');
-    const deckCountText = document.getElementById('deckCountText');
-    const endTurnBtn = document.getElementById('endTurnBtn');
-    const nextStepBtn = document.getElementById('nextStepBtn');
+    // --- CAMBIO CAPITOLO ---
+    function switchChapter(chId) {
+      currentChapterId = chId;
+      gameState = CHAPTERS_CONFIG[chId].init();
+      paymentPending = null;
 
-    // Modali
-    const inspectModal = document.getElementById('inspectModal');
-    const modalCardImg = document.getElementById('modalCardImg');
-    const modalCardTitle = document.getElementById('modalCardTitle');
-    const modalCardSubtitle = document.getElementById('modalCardSubtitle');
-    const modalInkBadge = document.getElementById('modalInkBadge');
-    const modalCostBadge = document.getElementById('modalCostBadge');
-    const modalInkExplanation = document.getElementById('modalInkExplanation');
-    const modalStatsExplanation = document.getElementById('modalStatsExplanation');
-    const modalActionInkBtn = document.getElementById('modalActionInkBtn');
-    const modalActionPlayBtn = document.getElementById('modalActionPlayBtn');
-    const closeInspectBtn = document.getElementById('closeInspectBtn');
-    const completionModal = document.getElementById('completionModal');
+      for (let i = 1; i <= 5; i++) {
+        const tab = document.getElementById(`chTab${i}`);
+        if (tab) {
+          if (i === chId) {
+            tab.className = 'px-2.5 py-1 rounded-lg text-xs font-bold transition flex items-center gap-1 bg-amber-500 text-slate-950 shadow';
+          } else {
+            tab.className = 'px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition flex items-center gap-1';
+          }
+        }
+      }
+      const mobileSelect = document.getElementById('mobileChSelect');
+      if (mobileSelect) mobileSelect.value = chId;
 
-    // --- FUNZIONI DI RENDER ---
+      document.getElementById('completionModal').classList.add('hidden');
+      document.getElementById('inspectModal').classList.add('hidden');
+      document.getElementById('battleModal').classList.add('hidden');
+      document.getElementById('payInkBanner').classList.add('hidden');
+      document.getElementById('singTogetherChoirBox').classList.add('hidden');
+
+      const oppArea = document.getElementById('opponentArea');
+      const locArea = document.getElementById('locationArea');
+      
+      if (chId >= 3) {
+        oppArea.classList.remove('hidden');
+      } else {
+        oppArea.classList.add('hidden');
+      }
+
+      if (chId === 5) {
+        locArea.classList.remove('hidden');
+      } else {
+        locArea.classList.add('hidden');
+      }
+
+      renderAll();
+      updateTutorUI();
+      sfx.play('click');
+    }
+
+    function restartCurrentChapter() {
+      switchChapter(currentChapterId);
+    }
+
+    function advanceNextChapter() {
+      if (currentChapterId < 5) {
+        switchChapter(currentChapterId + 1);
+      } else {
+        showToast("🎉 Congratulazioni! Hai completato tutti i capitoli dell'Accademia Disney Lorcana!", '🏆');
+      }
+    }
+
+    // --- RENDERING GENERALE ---
+    function renderAll() {
+      renderHand();
+      renderInkwell();
+      renderBattlefield();
+      renderOpponent();
+      renderLocations();
+
+      document.getElementById('inkAvailableText').textContent = gameState.inkAvailable;
+      document.getElementById('inkTotalText').textContent = gameState.inkTotal;
+      document.getElementById('loreCountText').textContent = gameState.lore;
+      document.getElementById('currentTurnBadge').textContent = gameState.turn;
+      document.getElementById('handCountText').textContent = gameState.hand.length;
+
+      const endTurnBtn = document.getElementById('endTurnBtn');
+      const cfg = CHAPTERS_CONFIG[currentChapterId];
+      const isEndTurnTarget = cfg.steps[gameState.step]?.target === 'endTurnBtn' && !paymentPending;
+
+      if (isEndTurnTarget) {
+        endTurnBtn.disabled = false;
+        endTurnBtn.className = 'px-4 py-1.5 rounded-xl text-xs font-black uppercase tracking-wider bg-amber-500 hover:bg-amber-400 text-slate-950 cursor-pointer border border-amber-300 transition shadow-lg shadow-amber-500/30 target-highlight flex items-center gap-1.5';
+      } else {
+        endTurnBtn.disabled = true;
+        endTurnBtn.className = 'px-4 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wider bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700 transition flex items-center gap-1.5';
+      }
+    }
+
+    // Render Mano
     function renderHand() {
-      cardsHandContainer.innerHTML = '';
-      handCountText.textContent = state.hand.length;
+      const container = document.getElementById('cardsHandContainer');
+      container.innerHTML = '';
 
-      state.hand.forEach(cardId => {
-        const card = CARDS_DB[cardId];
+      gameState.hand.forEach(cardId => {
+        const card = CARDS[cardId];
+        if (!card) return;
+
         const cardEl = document.createElement('div');
-        const isSelected = state.selectedCardId === cardId;
-        const isAllowedInStep = isCardAllowed(cardId);
+        const isHighlight = isCardHighlighted(cardId);
 
-        cardEl.className = `relative w-28 md:w-32 rounded-xl overflow-hidden shadow-lg border-2 cursor-pointer transition-all card-preview-hover ${
-          isSelected ? 'border-amber-400 ring-4 ring-amber-400/50 -translate-y-4' : 
-          isAllowedInStep ? 'border-slate-600 hover:border-amber-400' : 'border-slate-800 opacity-70'
+        cardEl.className = `relative w-24 md:w-28 rounded-xl overflow-hidden shadow-lg border-2 cursor-pointer transition-all card-hover-fx ${
+          isHighlight ? 'target-highlight' : 'border-slate-700 hover:border-amber-400'
         }`;
 
-        // Glow guidato
-        if (state.currentStep === 2 && cardId === 'qua') {
-          cardEl.classList.add('target-highlight');
-        } else if (state.currentStep === 3 && cardId === 'charlotte') {
-          cardEl.classList.add('target-highlight');
-        } else if (state.currentStep === 5 && !state.inkedThisTurn && cardId === 'giaguaro') {
-          cardEl.classList.add('target-highlight');
-        } else if (state.currentStep === 5 && state.inkedThisTurn && state.inkAvailable >= 2 && cardId === 'qui') {
-          cardEl.classList.add('target-highlight');
-        }
-
         cardEl.innerHTML = `
-          <img src="${card.image}" alt="${card.name}" class="w-full h-auto pointer-events-none block">
-          
-          <!-- Badge inchiostrabile visibile -->
-          <div class="absolute top-1 left-1 px-1.5 py-0.5 rounded text-[10px] font-bold ${
-            card.inkable ? 'bg-amber-500/90 text-slate-950 border border-amber-300' : 'bg-slate-900/90 text-slate-300 border border-slate-700'
+          <img src="${card.image}" alt="${card.name}" class="w-full h-auto block pointer-events-none">
+          <div class="absolute top-1 left-1 px-1 py-0.5 rounded text-[9px] font-black ${
+            card.inkable ? 'bg-amber-500 text-slate-950 border border-amber-300' : 'bg-slate-900 text-slate-300 border border-slate-700'
           }">
-            ${card.inkable ? '🖋️ Ink' : '❌ No Ink'}
+            ${card.inkable ? '🖋️ Ink' : '❌ No'}
           </div>
-
-          <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent p-1.5 text-center">
-            <div class="text-[10px] font-bold text-white truncate">${card.name}</div>
-            <div class="text-[9px] text-amber-300 font-mono">Costo: ${card.cost}</div>
+          <div class="absolute bottom-0 inset-x-0 bg-black/80 px-1 py-0.5 text-center">
+            <div class="text-[9px] font-bold text-white truncate">${card.name}</div>
           </div>
         `;
 
         cardEl.addEventListener('click', () => {
           sfx.play('click');
-          openCardInspect(cardId);
+          openCardInspect(cardId, 'hand');
         });
 
-        cardsHandContainer.appendChild(cardEl);
+        container.appendChild(cardEl);
       });
     }
 
+    // Render Inkwell (con supporto al tappaggio mana manuale)
     function renderInkwell() {
-      inkwellCardsContainer.innerHTML = '';
-      inkAvailableText.textContent = state.inkAvailable;
-      inkTotalText.textContent = state.inkTotal;
+      const container = document.getElementById('inkwellCardsContainer');
+      container.innerHTML = '';
 
-      if (state.inkwell.length === 0) {
-        inkwellCardsContainer.innerHTML = `
-          <div id="inkwellEmptyPlaceholder" class="text-center text-slate-500 text-xs italic flex flex-col items-center">
-            <div class="w-16 h-24 border-2 border-dashed border-slate-700 rounded-xl mb-1 flex items-center justify-center text-slate-600 text-lg">
+      if (gameState.inkwell.length === 0) {
+        container.innerHTML = `
+          <div class="text-center text-slate-500 text-[11px] italic flex flex-col items-center">
+            <div class="w-12 h-16 border-2 border-dashed border-slate-700 rounded-lg mb-1 flex items-center justify-center text-slate-600 text-base">
               🖋️
             </div>
-            Nessun inchiostro.<br>Posiziona qui 1 carta per turno.
+            Vuoto (0 Inchiostro)
           </div>
         `;
         return;
       }
 
-      state.inkwell.forEach((inkItem, index) => {
+      gameState.inkwell.forEach((ink, idx) => {
         const inkCard = document.createElement('div');
-        const isExerted = inkItem.exerted;
+        const isPayTarget = paymentPending && !ink.exerted;
 
-        inkCard.className = `relative w-16 h-22 rounded-lg overflow-hidden border border-amber-500/40 shadow-md transition-all duration-300 ${
-          isExerted ? 'card-exerted opacity-60' : 'hover:scale-105 shadow-amber-500/20'
-        }`;
+        inkCard.className = `relative w-12 md:w-14 h-16 md:h-19 rounded-md overflow-hidden border border-amber-500/40 shadow transition-all duration-300 ${
+          ink.exerted ? 'card-exerted opacity-50' : 'hover:scale-105 shadow-amber-500/20'
+        } ${isPayTarget ? 'target-highlight-ink' : ''}`;
 
         inkCard.innerHTML = `
-          <img src="Il Regno di Jafar/official_images_it/dorso-lorcana-ufficiale.jpg" alt="Inchiostro coperto" class="w-full h-full object-cover">
-          <div class="absolute inset-0 bg-slate-950/20 flex flex-col items-center justify-between p-1">
-            <span class="text-[9px] font-bold px-1 rounded ${isExerted ? 'bg-slate-900 text-slate-400' : 'bg-amber-500 text-slate-950'}">
-              ${isExerted ? 'Esaurito' : 'Pronto'}
+          <img src="cards/dorso.jpg" alt="Ink" class="w-full h-full object-cover">
+          <div class="absolute inset-0 bg-black/20 flex flex-col items-center justify-between p-0.5">
+            <span class="text-[8px] font-bold px-1 rounded ${ink.exerted ? 'bg-slate-900 text-slate-400' : 'bg-amber-400 text-slate-950'}">
+              ${ink.exerted ? 'Esaurito' : 'Pronto'}
             </span>
-            <span class="text-xs">✨</span>
           </div>
         `;
-        inkwellCardsContainer.appendChild(inkCard);
+
+        inkCard.addEventListener('click', () => {
+          handleInkCardClick(idx);
+        });
+
+        container.appendChild(inkCard);
       });
     }
 
+    // Render Campo Personaggi
     function renderBattlefield() {
-      battlefieldContainer.innerHTML = '';
+      const container = document.getElementById('battlefieldContainer');
+      container.innerHTML = '';
 
-      if (state.battlefield.length === 0) {
-        battlefieldContainer.innerHTML = `
-          <div id="battlefieldEmptyNotice" class="text-center text-slate-600 text-xs flex flex-col items-center">
-            <div class="w-24 h-34 border-2 border-dashed border-slate-800 rounded-xl mb-2 flex items-center justify-center text-slate-700 text-2xl">
+      if (gameState.battlefield.length === 0) {
+        container.innerHTML = `
+          <div class="text-center text-slate-600 text-xs flex flex-col items-center py-3">
+            <div class="w-20 h-28 border-2 border-dashed border-slate-800 rounded-xl mb-1.5 flex items-center justify-center text-slate-700 text-2xl">
               ⚔️
             </div>
-            Nessun personaggio in campo.<br>Paga l'inchiostro necessario per evocarli qui.
+            Nessun personaggio sul campo
           </div>
         `;
         return;
       }
 
-      state.battlefield.forEach(char => {
-        const card = CARDS_DB[char.cardId];
+      gameState.battlefield.forEach(char => {
+        const card = CARDS[char.cardId];
         const charEl = document.createElement('div');
-        charEl.className = `relative w-36 rounded-2xl overflow-hidden shadow-2xl border-2 border-indigo-400/60 bg-slate-900 transition-all ${
-          char.exerted ? 'card-exerted' : ''
-        }`;
+        const isHighlight = isBattlefieldCardHighlighted(char);
+
+        charEl.className = `relative w-28 md:w-32 rounded-xl overflow-hidden shadow-xl border-2 border-indigo-400/50 bg-slate-900 transition-all cursor-pointer ${
+          char.exerted ? 'card-exerted' : 'card-hover-fx'
+        } ${isHighlight ? (gameState.mode === 'choir' ? 'target-highlight-choir' : 'target-highlight') : ''}`;
 
         charEl.innerHTML = `
-          <img src="${card.image}" alt="${card.name}" class="w-full h-auto block">
+          <img src="${card.image}" alt="${card.name}" class="w-full h-auto block pointer-events-none">
           
           ${char.drying ? `
-            <div class="drying-drop">
-              <span>💧</span> <span>Inchiostro Fresco</span>
+            <div class="drying-indicator">
+              <span>💧</span> <span>Fresco</span>
+            </div>
+          ` : char.exerted ? `
+            <div class="absolute top-1 right-1 bg-slate-900/90 border border-slate-600 rounded px-1.5 py-0.5 text-[9px] text-slate-400 font-bold">
+              Esaurito
             </div>
           ` : `
-            <div class="absolute top-1.5 right-1.5 bg-emerald-950/80 border border-emerald-400 rounded-full px-2 py-0.5 text-[10px] text-emerald-300 font-bold">
-              ✓ Asciutto
+            <div class="absolute top-1 right-1 bg-emerald-950/80 border border-emerald-400 rounded px-1.5 py-0.5 text-[9px] text-emerald-300 font-bold">
+              ✓ Pronto
             </div>
           `}
 
-          <div class="p-2 bg-slate-950/90 border-t border-slate-800 text-center">
-            <div class="font-lorcana text-xs font-bold text-amber-300 truncate">${card.name}</div>
-            <div class="text-[10px] text-slate-400 flex items-center justify-center gap-2 mt-0.5 font-semibold">
-              <span title="Forza">⚔️ ${card.strength}</span>
-              <span title="Volontà">🛡️ ${card.willpower}</span>
-              <span title="Lore" class="text-amber-400">🏆 ${card.lore}</span>
+          ${char.damage > 0 ? `<div class="damage-badge">-${char.damage}</div>` : ''}
+
+          <div class="p-1.5 bg-slate-950/90 border-t border-slate-800 text-center">
+            <div class="font-lorcana text-[10px] font-bold text-amber-300 truncate">${card.name}</div>
+            <div class="text-[9px] text-slate-300 flex items-center justify-center gap-2 mt-0.5 font-bold">
+              <span>⚔️ ${card.strength}</span>
+              <span>🛡️ ${card.willpower}</span>
+              <span class="text-amber-400">🏆 ${card.lore}</span>
             </div>
           </div>
         `;
 
         charEl.addEventListener('click', () => {
-          sfx.play('click');
-          openCardInspect(char.cardId);
+          handleBattlefieldCardClick(char);
         });
 
-        battlefieldContainer.appendChild(charEl);
+        container.appendChild(charEl);
       });
     }
 
-    function isCardAllowed(cardId) {
-      const allowed = STEPS[state.currentStep]?.allowedCardClick;
-      return allowed ? allowed.includes(cardId) : true;
+    // Render Avversario
+    function renderOpponent() {
+      const container = document.getElementById('opponentBattlefield');
+      container.innerHTML = '';
+
+      if (gameState.opponent.length === 0) {
+        container.innerHTML = '<div class="text-xs text-slate-500 italic">Nessun personaggio avversario</div>';
+        return;
+      }
+
+      gameState.opponent.forEach(opp => {
+        const card = CARDS[opp.cardId];
+        const oppEl = document.createElement('div');
+        
+        oppEl.className = `relative w-26 md:w-28 rounded-xl overflow-hidden shadow-lg border-2 border-rose-500/50 bg-slate-900 transition-all ${
+          opp.exerted ? 'card-exerted' : ''
+        }`;
+
+        oppEl.innerHTML = `
+          <img src="${card.image}" alt="${card.name}" class="w-full h-auto block pointer-events-none">
+          <div class="absolute top-1 left-1 px-1.5 py-0.5 rounded text-[9px] font-bold ${
+            opp.exerted ? 'bg-amber-400 text-slate-950 border border-amber-300' : 'bg-slate-900 text-slate-400 border border-slate-700'
+          }">
+            ${opp.exerted ? '⚠️ SFIDABILE' : '🛡️ PROTETTO'}
+          </div>
+
+          ${opp.damage > 0 ? `<div class="damage-badge">-${opp.damage}</div>` : ''}
+
+          <div class="p-1 bg-slate-950/90 text-center">
+            <div class="text-[9px] font-bold text-rose-300 truncate">${card.name}</div>
+            <div class="text-[9px] text-slate-300 flex items-center justify-center gap-2 font-bold">
+              <span>⚔️ ${card.strength}</span>
+              <span>🛡️ ${card.willpower}</span>
+            </div>
+          </div>
+        `;
+
+        oppEl.addEventListener('click', () => {
+          if (currentChapterId === 3 && gameState.step === 1) {
+            if (!opp.exerted) {
+              showToast("Gennarino è pronto (dritto) e PROTETTO! Puoi sfidare solo Maga Magò (esaurita).", "🛡️");
+              return;
+            }
+            openBattleModal('qua', opp.cardId);
+          } else {
+            openCardInspect(opp.cardId, 'opponent');
+          }
+        });
+
+        container.appendChild(oppEl);
+      });
     }
 
-    // --- APERTURA E GESTIONE MODALE CARTA ---
-    function openCardInspect(cardId) {
-      const card = CARDS_DB[cardId];
+    // Render Luoghi (Capitolo 5) con la vera carta orizzontale
+    function renderLocations() {
+      const container = document.getElementById('locationSlots');
+      container.innerHTML = '';
+
+      if (gameState.locations.length === 0) {
+        if (currentChapterId === 5) {
+          container.innerHTML = `
+            <div class="text-center text-sky-400/80 text-xs italic py-2">
+              Nessun Luogo in gioco. Evoca L'Isola di Archazia dalla tua mano!
+            </div>
+          `;
+        }
+        return;
+      }
+
+      gameState.locations.forEach(loc => {
+        const card = CARDS[loc.id] || CARDS['archazia_location'];
+        const locEl = document.createElement('div');
+        const isHighlight = currentChapterId === 5 && gameState.step === 2;
+
+        locEl.className = `relative w-72 md:w-84 rounded-2xl overflow-hidden shadow-2xl border-2 border-sky-400 bg-slate-900 cursor-pointer transition-all ${
+          isHighlight ? 'target-highlight' : 'hover:scale-105'
+        }`;
+
+        locEl.innerHTML = `
+          <img src="${card.image}" alt="${card.name}" class="w-full h-auto block pointer-events-none">
+          <div class="absolute bottom-2 inset-x-2 bg-slate-950/95 rounded-xl p-1.5 border border-sky-400/50 flex items-center justify-between text-[10px]">
+            <span class="text-sky-300 font-bold">Personaggi presenti:</span>
+            <span class="font-extrabold ${loc.charactersHere.length > 0 ? 'text-amber-300 bg-amber-500/20 px-2 py-0.5 rounded' : 'text-slate-500'}">
+              ${loc.charactersHere.length > 0 ? loc.charactersHere.join(', ') : 'Nessuno'}
+            </span>
+          </div>
+        `;
+
+        locEl.addEventListener('click', () => {
+          openCardInspect(loc.id, 'location');
+        });
+
+        container.appendChild(locEl);
+      });
+    }
+
+    // --- CONTROLLI E INTERAZIONI DIDATTICHE ---
+    function updateTutorUI() {
+      const cfg = CHAPTERS_CONFIG[currentChapterId];
+      const stepData = cfg.steps[gameState.step];
+      if (!stepData) return;
+
+      document.getElementById('tutorTitle').textContent = stepData.title;
+      document.getElementById('tutorSpeech').innerHTML = stepData.speech;
+      document.getElementById('hintText').textContent = stepData.hint;
+      document.getElementById('stepCounter').textContent = `Passo ${gameState.step} di ${Object.keys(cfg.steps).length}`;
+    }
+
+    function isCardHighlighted(cardId) {
+      if (paymentPending) return false;
+
+      if (currentChapterId === 1) {
+        if (gameState.step === 2 && cardId === 'qua') return true;
+        if (gameState.step === 3 && cardId === 'charlotte') return true;
+        if (gameState.step === 5 && !gameState.inkedThisTurn && cardId === 'giaguaro') return true;
+        if (gameState.step === 5 && gameState.inkedThisTurn && cardId === 'qui') return true;
+      } else if (currentChapterId === 3) {
+        if (gameState.step === 2 && cardId === 'clawhauser') return true;
+      } else if (currentChapterId === 4) {
+        if (gameState.step === 1 && cardId === 'azione_colpo') return true;
+        if (gameState.step === 2 && cardId === 'canzone_ostacoli') return true;
+        if (gameState.step === 3 && cardId === 'canzone_try') return true;
+        if (gameState.step === 4 && cardId === 'canzone_insieme') return true;
+      } else if (currentChapterId === 5) {
+        if (gameState.step === 1 && cardId === 'archazia_location') return true;
+      }
+      return false;
+    }
+
+    function isBattlefieldCardHighlighted(char) {
+      if (char.exerted) return false;
+
+      if (currentChapterId === 2) {
+        if (gameState.step === 1 && char.cardId === 'charlotte') return true;
+        if (gameState.step === 2 && char.cardId === 'qua') return true;
+      } else if (currentChapterId === 3) {
+        if (gameState.step === 1 && char.cardId === 'qua') return true;
+      } else if (currentChapterId === 4) {
+        if (gameState.mode === 'select_singer_ostacoli') {
+          return char.cardId !== 'charlotte';
+        } else if (gameState.mode === 'select_singer_clawhauser') {
+          return char.cardId === 'clawhauser';
+        } else if (gameState.mode === 'choir') {
+          return !gameState.choirSelectedIds.includes(char.cardId);
+        }
+      } else if (currentChapterId === 5) {
+        if (gameState.step === 2 && char.cardId === 'qui') return true;
+      }
+      return false;
+    }
+
+    // --- TAPPAGGIO INCHIOSTRO MANUALE (PAGAMENTO COSTI) ---
+    function startInkPayment(cardId, cost, type = 'play', targetOpp = null) {
+      if (gameState.inkAvailable < cost) {
+        showToast(`Non hai abbastanza inchiostro disponibile (${gameState.inkAvailable}/${cost})!`, '❌');
+        return;
+      }
+
+      paymentPending = {
+        cardId: cardId,
+        costNeeded: cost,
+        costTapped: 0,
+        type: type,
+        targetOpp: targetOpp
+      };
+
+      document.getElementById('payInkTappedText').textContent = '0';
+      document.getElementById('payInkNeededText').textContent = cost;
+      document.getElementById('payInkBanner').classList.remove('hidden');
+      document.getElementById('payInkInstruction').textContent = `Tappa ${cost} inchiostro/i pronto/i cliccando sulle carte nell'Inkwell a sinistra!`;
+
+      renderAll();
+    }
+
+    function cancelInkPayment() {
+      if (!paymentPending) return;
+      // Ripristina gli inchiostri parzialmente tappati in questo tentativo
+      let toRestore = paymentPending.costTapped;
+      gameState.inkwell.forEach(ink => {
+        if (ink.exerted && toRestore > 0) {
+          ink.exerted = false;
+          toRestore--;
+        }
+      });
+      gameState.inkAvailable += paymentPending.costTapped;
+      paymentPending = null;
+      document.getElementById('payInkBanner').classList.add('hidden');
+      renderAll();
+    }
+
+    function handleInkCardClick(index) {
+      if (!paymentPending) return;
+
+      const ink = gameState.inkwell[index];
+      if (ink.exerted) {
+        showToast("Questo inchiostro è già esaurito!", "⚠️");
+        return;
+      }
+
+      sfx.play('tap');
+      ink.exerted = true;
+      gameState.inkAvailable--;
+      paymentPending.costTapped++;
+
+      document.getElementById('payInkTappedText').textContent = paymentPending.costTapped;
+
+      if (paymentPending.costTapped >= paymentPending.costNeeded) {
+        // Pagamento completato!
+        setTimeout(() => {
+          finalizePaymentAction(paymentPending);
+          paymentPending = null;
+          document.getElementById('payInkBanner').classList.add('hidden');
+        }, 300);
+      }
+
+      renderAll();
+    }
+
+    function finalizePaymentAction(pending) {
+      sfx.play('play');
+      const card = CARDS[pending.cardId];
+
+      if (pending.type === 'play') {
+        gameState.hand = gameState.hand.filter(id => id !== pending.cardId);
+
+        if (card.type === 'Personaggio') {
+          gameState.battlefield.push({
+            cardId: pending.cardId,
+            exerted: false,
+            drying: true,
+            damage: 0
+          });
+        } else if (card.type === 'Luogo') {
+          gameState.locations.push({
+            id: pending.cardId,
+            name: card.name,
+            subtitle: card.subtitle,
+            cost: card.cost,
+            moveCost: card.moveCost,
+            willpower: card.willpower,
+            passiveLore: card.passiveLore,
+            damage: 0,
+            charactersHere: []
+          });
+        }
+
+        // Progressione capitoli
+        if (currentChapterId === 1) {
+          if (gameState.step === 3 && pending.cardId === 'charlotte') {
+            gameState.step = 4;
+            updateTutorUI();
+          } else if (gameState.step === 5 && pending.cardId === 'qui') {
+            setTimeout(() => {
+              sfx.play('win');
+              showChapterComplete();
+            }, 800);
+          }
+        } else if (currentChapterId === 3 && gameState.step === 2 && pending.cardId === 'clawhauser') {
+          gameState.step = 3;
+          updateTutorUI();
+          setTimeout(() => {
+            sfx.play('win');
+            showChapterComplete();
+          }, 1200);
+        } else if (currentChapterId === 5 && gameState.step === 1 && pending.cardId === 'archazia_location') {
+          gameState.step = 2;
+          updateTutorUI();
+        }
+
+      } else if (pending.type === 'action') {
+        // Azione Colpo Rapido
+        gameState.hand = gameState.hand.filter(id => id !== pending.cardId);
+        if (pending.targetOpp) {
+          pending.targetOpp.damage += 1;
+        }
+        gameState.step = 2;
+        updateTutorUI();
+
+      } else if (pending.type === 'move') {
+        // Sposta Qui nel Luogo
+        if (gameState.locations.length > 0) {
+          gameState.locations[0].charactersHere.push('Qui');
+        }
+        gameState.step = 3;
+        updateTutorUI();
+      }
+
+      renderAll();
+    }
+
+    // --- CLICK SUL CAMPO DI BATTAGLIA (TAP CREATURE, QUEST, SFIDA) ---
+    function handleBattlefieldCardClick(char) {
+      const card = CARDS[char.cardId];
+
+      // Capitolo 4: Modalità Selezione Cantante Singolo (Mille Ostacoli)
+      if (currentChapterId === 4 && gameState.mode === 'select_singer_ostacoli') {
+        if (char.exerted) {
+          showToast(`${card.name} è già esaurito/tappato e non può cantare!`, "⚠️");
+          return;
+        }
+        if (card.cost < 2) {
+          showToast(`Charlotte costa solo 1! La canzone richiede costo 2 o superiore.`, "⚠️");
+          return;
+        }
+        sfx.play('tap');
+        char.exerted = true; // TAPPA MANUALE!
+        sfx.play('song');
+        gameState.hand = gameState.hand.filter(id => id !== 'canzone_ostacoli');
+        gameState.mode = 'normal';
+        renderAll();
+
+        setTimeout(() => {
+          gameState.step = 3;
+          updateTutorUI();
+        }, 800);
+        return;
+      }
+
+      // Capitolo 4: Modalità Selezione Cantante Singolo (Clawhauser con Melodioso 4)
+      if (currentChapterId === 4 && gameState.mode === 'select_singer_clawhauser') {
+        if (char.exerted) {
+          showToast(`Clawhauser è già esaurito! Una creatura già tappata non può cantare!`, "⚠️");
+          return;
+        }
+        if (char.cardId !== 'clawhauser') {
+          showToast("Clicca su Clawhauser per testare l'abilità Melodioso 4!", "⚠️");
+          return;
+        }
+        sfx.play('tap');
+        char.exerted = true; // TAPPA MANUALE!
+        sfx.play('song');
+        gameState.hand = gameState.hand.filter(id => id !== 'canzone_try');
+        gameState.mode = 'normal';
+        renderAll();
+
+        setTimeout(() => {
+          gameState.step = 4;
+          updateTutorUI();
+        }, 800);
+        return;
+      }
+
+      // Capitolo 4: Modalità Cantare Insieme (CORO A 3 CREATURE MANUALE)
+      if (currentChapterId === 4 && gameState.mode === 'choir') {
+        if (char.exerted) {
+          showToast(`${card.name} è già esaurito nel coro!`, "⚠️");
+          return;
+        }
+        sfx.play('tap');
+        char.exerted = true; // TAPPA MANUALE!
+        gameState.choirSelectedIds.push(char.cardId);
+
+        let totalCost = 0;
+        gameState.choirSelectedIds.forEach(id => {
+          totalCost += CARDS[id].cost;
+        });
+
+        document.getElementById('choirCostAccumulated').textContent = totalCost;
+
+        if (totalCost >= 9) {
+          const btn = document.getElementById('executeChoirSongBtn');
+          btn.disabled = false;
+          btn.className = 'px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 border border-amber-300 shadow-lg shadow-amber-400/40 cursor-pointer animate-pulse transition';
+        }
+
+        renderAll();
+        return;
+      }
+
+      // Capitolo 2: Questing
+      if (currentChapterId === 2) {
+        if (char.drying) {
+          showToast("Questo personaggio ha l'inchiostro fresco e non può agire in questo turno!", "💧");
+          return;
+        }
+        if (char.exerted) {
+          showToast("Questo personaggio è già esaurito!", "⚠️");
+          return;
+        }
+        sfx.play('tap');
+        char.exerted = true;
+        sfx.play('quest');
+        gameState.lore += card.lore;
+        renderAll();
+
+        if (gameState.step === 1 && char.cardId === 'charlotte') {
+          gameState.step = 2;
+          updateTutorUI();
+        } else if (gameState.step === 2 && char.cardId === 'qua') {
+          setTimeout(() => {
+            sfx.play('win');
+            showChapterComplete();
+          }, 800);
+        }
+        return;
+      }
+
+      // Capitolo 3: Sfida Maga Magò
+      if (currentChapterId === 3 && gameState.step === 1) {
+        openBattleModal('qua', 'maga_mago');
+        return;
+      }
+
+      // Capitolo 5: Sposta Qui nel Luogo
+      if (currentChapterId === 5 && gameState.step === 2 && char.cardId === 'qui') {
+        openCardInspect('qui', 'battlefield_qui_location');
+        return;
+      }
+
+      openCardInspect(char.cardId, 'battlefield');
+    }
+
+    // Esegui Canzone in Coro (Capitolo 4, Passo 4)
+    document.getElementById('executeChoirSongBtn').addEventListener('click', () => {
+      sfx.play('song');
+      gameState.hand = gameState.hand.filter(id => id !== 'canzone_insieme');
+      document.getElementById('singTogetherChoirBox').classList.add('hidden');
+      gameState.mode = 'normal';
+      renderAll();
+
+      setTimeout(() => {
+        sfx.play('win');
+        showChapterComplete();
+      }, 1000);
+    });
+
+    // --- POPUP DI BATTAGLIA ELEGANTE (ADDIO ALERT!) ---
+    function openBattleModal(attackerId, defenderId) {
+      const att = CARDS[attackerId];
+      const def = CARDS[defenderId];
+      const defenderObj = gameState.opponent.find(o => o.cardId === defenderId);
+
+      document.getElementById('battleAttackerImg').src = att.image;
+      document.getElementById('battleDefenderImg').src = def.image;
+      document.getElementById('battleAttackerStats').innerHTML = `⚔️ ${att.strength} • 🛡️ ${att.willpower}`;
+      document.getElementById('battleDefenderStats').innerHTML = `⚔️ ${def.strength} • 🛡️ ${def.willpower} (${defenderObj.damage} danni attuali)`;
+
+      const defDmgAfter = defenderObj.damage + att.strength;
+      const attDmgAfter = def.strength;
+
+      const defBanished = defDmgAfter >= def.willpower;
+      const attBanished = attDmgAfter >= att.willpower;
+
+      document.getElementById('battleExplanation').innerHTML = `
+        <div class="flex items-center gap-1.5 text-amber-300 font-bold">
+          <span>⚔️ ${att.name}</span> infligge <strong>${att.strength} danni</strong> a ${def.name}.
+        </div>
+        <div class="text-[11px] text-slate-400 pl-4">
+          Danni totali su Maga Magò: ${defenderObj.damage} + ${att.strength} = <strong>${defDmgAfter} / ${def.willpower}</strong> ${defBanished ? '<span class="text-rose-400 font-bold">(BANDITA!)</span>' : ''}
+        </div>
+        <div class="flex items-center gap-1.5 text-rose-300 font-bold mt-1">
+          <span>⚔️ ${def.name}</span> infligge <strong>${def.strength} danni</strong> a ${att.name}.
+        </div>
+        <div class="text-[11px] text-slate-400 pl-4">
+          Danni totali su Qua: <strong>${attDmgAfter} / ${att.willpower}</strong> ${attBanished ? '<span class="text-rose-400 font-bold">(BANDITO!)</span>' : ''}
+        </div>
+      `;
+
+      document.getElementById('confirmBattleBtn').onclick = () => {
+        closeBattleModal();
+        sfx.play('challenge');
+        
+        const attChar = gameState.battlefield.find(b => b.cardId === attackerId);
+        attChar.exerted = true;
+        defenderObj.damage += att.strength;
+        attChar.damage += def.strength;
+
+        setTimeout(() => {
+          gameState.opponent = gameState.opponent.filter(o => o.damage < CARDS[o.cardId].willpower);
+          gameState.battlefield = gameState.battlefield.filter(b => b.damage < CARDS[b.cardId].willpower);
+          renderAll();
+
+          gameState.step = 2;
+          updateTutorUI();
+        }, 700);
+      };
+
+      document.getElementById('battleModal').classList.remove('hidden');
+    }
+
+    function closeBattleModal() {
+      document.getElementById('battleModal').classList.add('hidden');
+    }
+
+    // --- MODALE INGRANDIMENTO E AZIONI CARTA ---
+    function openCardInspect(cardId, origin) {
+      const card = CARDS[cardId];
       if (!card) return;
 
-      modalCardImg.src = card.image;
-      modalCardTitle.textContent = card.name;
-      modalCardSubtitle.textContent = card.subtitle;
+      document.getElementById('modalCardImg').src = card.image;
+      document.getElementById('modalCardTitle').textContent = card.name;
+      document.getElementById('modalCardSubtitle').textContent = card.subtitle;
+      document.getElementById('modalTypeBadge').textContent = card.type;
+      document.getElementById('modalCostBadge').textContent = `Costo: ${card.cost}`;
 
-      modalInkBadge.textContent = card.inkable ? 'INCHIOSTRABILE' : 'NON INCHIOSTRABILE';
-      modalInkBadge.className = card.inkable 
-        ? 'text-xs font-bold px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40'
-        : 'text-xs font-bold px-2.5 py-0.5 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/40';
+      const inkBadge = document.getElementById('modalInkBadge');
+      inkBadge.textContent = card.inkable ? 'INCHIOSTRABILE' : 'NON INCHIOSTRABILE';
+      inkBadge.className = card.inkable 
+        ? 'text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40'
+        : 'text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/40';
 
-      modalCostBadge.textContent = `Costo: ${card.cost}`;
-      modalInkExplanation.textContent = card.inkRule;
-      modalStatsExplanation.textContent = card.statsRule;
+      document.getElementById('modalInkExplanation').textContent = card.inkRule;
+      document.getElementById('modalStatsExplanation').textContent = card.statsRule;
 
-      // Logica bottoni di azione nel modale
-      const isInHand = state.hand.includes(cardId);
+      const inkBtn = document.getElementById('modalActionInkBtn');
+      const playBtn = document.getElementById('modalActionPlayBtn');
+      const singBtn = document.getElementById('modalActionSingBtn');
+      const singTogetherBtn = document.getElementById('modalActionSingTogetherBtn');
+      const moveToLocBtn = document.getElementById('modalActionMoveToLocationBtn');
 
-      if (!isInHand) {
-        modalActionInkBtn.classList.add('hidden');
-        modalActionPlayBtn.classList.add('hidden');
-      } else {
-        modalActionInkBtn.classList.remove('hidden');
-        modalActionPlayBtn.classList.remove('hidden');
+      inkBtn.classList.add('hidden');
+      playBtn.classList.add('hidden');
+      singBtn.classList.add('hidden');
+      singTogetherBtn.classList.add('hidden');
+      moveToLocBtn.classList.add('hidden');
 
-        // Può inchiostrare?
-        const canInk = card.inkable && !state.inkedThisTurn;
-        modalActionInkBtn.disabled = !canInk;
-        modalActionInkBtn.className = canInk
+      if (origin === 'hand') {
+        inkBtn.classList.remove('hidden');
+        playBtn.classList.remove('hidden');
+
+        // Inchiostrare
+        const canInk = card.inkable && !gameState.inkedThisTurn;
+        inkBtn.disabled = !canInk;
+        inkBtn.className = canInk 
           ? 'flex-1 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs uppercase tracking-wider transition shadow-lg'
           : 'flex-1 py-2 rounded-xl bg-slate-800 text-slate-500 border border-slate-700 cursor-not-allowed font-bold text-xs uppercase tracking-wider';
 
-        modalActionInkBtn.title = state.inkedThisTurn ? "Hai già inchiostrato una carta in questo turno!" : "";
+        inkBtn.onclick = () => {
+          inkCardFromHand(cardId);
+          closeInspect();
+        };
 
-        // Può giocare?
-        const canPlay = state.inkAvailable >= card.cost;
-        modalActionPlayBtn.disabled = !canPlay;
-        modalActionPlayBtn.className = canPlay
+        // Giocare normalmente (con tappaggio inchiostro!)
+        const canPlay = gameState.inkAvailable >= card.cost;
+        playBtn.disabled = !canPlay;
+        playBtn.className = canPlay
           ? 'flex-1 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs uppercase tracking-wider transition shadow-lg'
           : 'flex-1 py-2 rounded-xl bg-slate-800 text-slate-500 border border-slate-700 cursor-not-allowed font-bold text-xs uppercase tracking-wider';
 
-        modalActionInkBtn.onclick = () => {
-          inkCard(cardId);
-          closeInspect();
-        };
+        if (card.id === 'azione_colpo') {
+          playBtn.textContent = '⚔️ Lancia Azione (Paga 2 Inchiostri)';
+          playBtn.onclick = () => {
+            closeInspect();
+            const opp = gameState.opponent.find(o => o.cardId === 'maga_mago');
+            startInkPayment('azione_colpo', 2, 'action', opp);
+          };
+        } else if (card.type === 'Luogo') {
+          playBtn.textContent = '🏛️ Evoca Luogo (Paga 2 Inchiostri)';
+          playBtn.onclick = () => {
+            closeInspect();
+            startInkPayment(cardId, card.cost, 'play');
+          };
+        } else {
+          playBtn.textContent = `⚔️ Gioca Carta (Paga ${card.cost} Inchiostro/i)`;
+          playBtn.onclick = () => {
+            closeInspect();
+            startInkPayment(cardId, card.cost, 'play');
+          };
+        }
 
-        modalActionPlayBtn.onclick = () => {
-          playCard(cardId);
+        // Canto Singolo (Capitolo 4)
+        if (currentChapterId === 4 && (cardId === 'canzone_ostacoli' || cardId === 'canzone_try')) {
+          singBtn.classList.remove('hidden');
+          singBtn.onclick = () => {
+            closeInspect();
+            if (cardId === 'canzone_ostacoli') {
+              gameState.mode = 'select_singer_ostacoli';
+              document.getElementById('tutorSpeech').innerHTML = "<strong class='text-amber-300'>Seleziona chi canterà!</strong> Clicca su una creatura PRONTA sul campo (con costo ≥ 2) per esaurirla/tapparla e cantare gratis!";
+              document.getElementById('hintText').textContent = "Obiettivo: Clicca su Qui (costo 2) per farlo cantare!";
+            } else if (cardId === 'canzone_try') {
+              gameState.mode = 'select_singer_clawhauser';
+              document.getElementById('tutorSpeech').innerHTML = "<strong class='text-amber-300'>Melodioso 4!</strong> Clicca direttamente su Clawhauser sul campo per tapparlo e sfruttare la sua abilità per cantare gratis la canzone da 4!";
+              document.getElementById('hintText').textContent = "Obiettivo: Clicca su Clawhauser per tapparlo!";
+            }
+            renderAll();
+          };
+        }
+
+        // Cantare Insieme (Capitolo 4, Passo 4)
+        if (currentChapterId === 4 && cardId === 'canzone_insieme') {
+          singTogetherBtn.classList.remove('hidden');
+          singTogetherBtn.onclick = () => {
+            closeInspect();
+            gameState.mode = 'choir';
+            gameState.choirSelectedIds = [];
+            document.getElementById('singTogetherChoirBox').classList.remove('hidden');
+            document.getElementById('choirCostAccumulated').textContent = '0';
+            document.getElementById('executeChoirSongBtn').disabled = true;
+            document.getElementById('tutorSpeech').innerHTML = "Modalità Coro attiva! <strong>Clicca sulle tue 3 creature pronte</strong> (Tiana da 4 + Bruno da 4 + Charlotte da 1 = 9) per tapparle una per una!";
+            document.getElementById('hintText').textContent = "Obiettivo: Tappa le 3 creature sul campo per raggiungere 9/9 nel coro!";
+            renderAll();
+          };
+        }
+
+      } else if (origin === 'battlefield_qui_location') {
+        // Spostare Qui nell'Isola di Archazia
+        moveToLocBtn.classList.remove('hidden');
+        moveToLocBtn.onclick = () => {
           closeInspect();
+          startInkPayment('qui', 1, 'move');
         };
       }
 
-      inspectModal.classList.remove('hidden');
+      document.getElementById('inspectModal').classList.remove('hidden');
 
-      // Se eravamo al passo 1 e abbiamo aperto la carta, facciamo progredire al passo 2!
-      if (state.currentStep === 1) {
+      if (currentChapterId === 1 && gameState.step === 1) {
         setTimeout(() => {
-          advanceToStep(2);
+          gameState.step = 2;
+          updateTutorUI();
+          renderHand();
         }, 1200);
       }
     }
 
     function closeInspect() {
-      inspectModal.classList.add('hidden');
+      document.getElementById('inspectModal').classList.add('hidden');
     }
 
-    closeInspectBtn.addEventListener('click', closeInspect);
-    inspectModal.addEventListener('click', (e) => {
-      if (e.target === inspectModal) closeInspect();
-    });
-
-    // --- AZIONI DI GIOCO ---
-    function inkCard(cardId) {
-      if (state.inkedThisTurn) {
-        alert("Puoi inchiostrare solo 1 carta per turno!");
-        return;
-      }
-      const card = CARDS_DB[cardId];
-      if (!card.inkable) {
-        alert("Questa carta non è inchiostrabile (non ha il simbolo dorato attorno al costo)!");
-        return;
-      }
+    // Inchiostrazione carta
+    function inkCardFromHand(cardId) {
+      const card = CARDS[cardId];
+      if (!card.inkable || gameState.inkedThisTurn) return;
 
       sfx.play('ink');
+      gameState.hand = gameState.hand.filter(id => id !== cardId);
+      gameState.inkwell.push({ cardId: cardId, exerted: false });
+      gameState.inkTotal++;
+      gameState.inkAvailable++;
+      gameState.inkedThisTurn = true;
 
-      // Rimuovi dalla mano
-      state.hand = state.hand.filter(id => id !== cardId);
-      // Aggiungi all'inkwell
-      state.inkwell.push({ cardId: cardId, exerted: false });
-      state.inkTotal += 1;
-      state.inkAvailable += 1;
-      state.inkedThisTurn = true;
-
-      renderHand();
-      renderInkwell();
-
-      // Controllo progressione tutorial
-      if (state.currentStep === 2 && cardId === 'qua') {
-        advanceToStep(3);
-      } else if (state.currentStep === 5 && cardId === 'giaguaro') {
-        tutorSpeech.innerHTML = "Inchiostro aggiunto! Ora hai <strong class='text-amber-300'>2 Inchiostri disponibili</strong>. È il momento di giocare <strong class='text-amber-300'>Qui</strong> (costo 2)!";
-        hintText.textContent = "Obiettivo: Clicca su 'Qui' in mano e seleziona 'Gioca in Campo'.";
-        renderHand();
-      }
-    }
-
-    function playCard(cardId) {
-      const card = CARDS_DB[cardId];
-      if (state.inkAvailable < card.cost) {
-        alert(`Non hai abbastanza inchiostro! Questa carta costa ${card.cost}, ma ne hai solo ${state.inkAvailable}.`);
-        return;
-      }
-
-      sfx.play('play');
-
-      // Spendi inchiostro: esaurisci n carte dell'inkwell
-      let toExert = card.cost;
-      for (let ink of state.inkwell) {
-        if (!ink.exerted && toExert > 0) {
-          ink.exerted = true;
-          toExert--;
+      if (currentChapterId === 1) {
+        if (gameState.step === 2 && cardId === 'qua') {
+          gameState.step = 3;
+          updateTutorUI();
+        } else if (gameState.step === 5 && cardId === 'giaguaro') {
+          document.getElementById('tutorSpeech').innerHTML = "Ottimo! Ora hai <strong>2 Inchiostri disponibili</strong>. È il momento di giocare <strong>Qui</strong> (costo 2)!";
+          document.getElementById('hintText').textContent = "Obiettivo: Clicca su 'Qui' in mano -> 'Gioca' -> Tappa 2 inchiostri!";
         }
       }
-      state.inkAvailable -= card.cost;
 
-      // Rimuovi dalla mano ed evoca sul campo
-      state.hand = state.hand.filter(id => id !== cardId);
-      state.battlefield.push({
-        cardId: cardId,
-        exerted: false,
-        drying: true // I personaggi appena giocati hanno l'inchiostro fresco!
-      });
-
-      renderHand();
-      renderInkwell();
-      renderBattlefield();
-
-      // Progressione tutorial
-      if (state.currentStep === 3 && cardId === 'charlotte') {
-        advanceToStep(4);
-      } else if (state.currentStep === 5 && cardId === 'qui') {
-        setTimeout(() => {
-          sfx.play('win');
-          completionModal.classList.remove('hidden');
-        }, 1000);
-      }
+      renderAll();
     }
 
-    function endTurn() {
+    // Passa Turno (Ready -> Set -> Draw)
+    document.getElementById('endTurnBtn').addEventListener('click', () => {
       sfx.play('click');
-      endTurnBtn.disabled = true;
-      endTurnBtn.className = 'px-5 py-2 rounded-xl text-xs font-bold uppercase tracking-wider bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700 transition flex items-center gap-2';
+      const btn = document.getElementById('endTurnBtn');
+      btn.disabled = true;
 
-      // Passaggio al Turno 2 con sequenza Ready, Set, Draw
-      state.turn = 2;
-      currentTurnBadge.textContent = state.turn;
+      gameState.turn++;
+      document.getElementById('currentTurnBadge').textContent = gameState.turn;
 
       // 1. READY (Raddrizza)
-      document.getElementById('phaseReady').className = 'px-2 py-0.5 rounded font-mono font-bold bg-amber-400 text-slate-950 border border-amber-300';
-      sfx.play('ready');
+      document.getElementById('phaseReady').className = 'px-1.5 py-0.5 rounded font-mono font-bold bg-amber-400 text-slate-950 border border-amber-300';
+      sfx.play('ink');
 
       setTimeout(() => {
-        // Ripristina l'inchiostro
-        state.inkwell.forEach(ink => ink.exerted = false);
-        state.inkAvailable = state.inkTotal;
+        gameState.inkwell.forEach(i => i.exerted = false);
+        gameState.inkAvailable = gameState.inkTotal;
+        gameState.battlefield.forEach(b => {
+          b.exerted = false;
+          b.drying = false;
+        });
+        gameState.inkedThisTurn = false;
+        renderAll();
 
-        // Asciuga i personaggi (Drying -> Ready)
-        state.battlefield.forEach(char => char.drying = false);
+        // 2. SET (Se c'è un Luogo, genera Lore passiva automatica!)
+        document.getElementById('phaseReady').className = 'px-1.5 py-0.5 rounded font-mono text-slate-500';
+        document.getElementById('phaseSet').className = 'px-1.5 py-0.5 rounded font-mono font-bold bg-purple-500 text-white';
 
-        state.inkedThisTurn = false;
-        renderInkwell();
-        renderBattlefield();
-
-        // 2. SET
-        document.getElementById('phaseReady').className = 'px-2 py-0.5 rounded font-mono text-slate-500';
-        document.getElementById('phaseSet').className = 'px-2 py-0.5 rounded font-mono font-bold bg-purple-500 text-white';
+        if (currentChapterId === 5 && gameState.locations.length > 0) {
+          sfx.play('quest');
+          const passiveGain = gameState.locations[0].passiveLore;
+          gameState.lore += passiveGain;
+          document.getElementById('loreCountText').textContent = gameState.lore;
+          showToast(`🏛️ L'Isola di Archazia ha generato automaticamente +${passiveGain} Lore passiva nella fase SET!`, '🏆');
+        }
 
         setTimeout(() => {
-          // 3. DRAW
-          document.getElementById('phaseSet').className = 'px-2 py-0.5 rounded font-mono text-slate-500';
-          document.getElementById('phaseDraw').className = 'px-2 py-0.5 rounded font-mono font-bold bg-emerald-500 text-white';
-
-          // Pesca carta canzone
+          // 3. DRAW (Pesca)
+          document.getElementById('phaseSet').className = 'px-1.5 py-0.5 rounded font-mono text-slate-500';
+          document.getElementById('phaseDraw').className = 'px-1.5 py-0.5 rounded font-mono font-bold bg-emerald-500 text-white';
           sfx.play('ink');
-          state.hand.push('canzone');
-          deckCountText.textContent = '52';
-          renderHand();
+
+          if (currentChapterId === 1) {
+            gameState.hand.push('canzone_ostacoli');
+            document.getElementById('deckCountText').textContent = '52';
+          }
+
+          renderAll();
 
           setTimeout(() => {
-            document.getElementById('phaseDraw').className = 'px-2 py-0.5 rounded font-mono text-slate-500';
-            advanceToStep(5);
-          }, 800);
+            document.getElementById('phaseDraw').className = 'px-1.5 py-0.5 rounded font-mono text-slate-500';
+
+            if (currentChapterId === 1) {
+              gameState.step = 5;
+              updateTutorUI();
+            } else if (currentChapterId === 5) {
+              sfx.play('win');
+              showChapterComplete();
+            }
+          }, 700);
 
         }, 700);
 
-      }, 800);
-    }
-
-    endTurnBtn.addEventListener('click', endTurn);
-
-    function advanceToStep(stepNum) {
-      state.currentStep = stepNum;
-      const stepData = STEPS[stepNum];
-
-      tutorTitle.textContent = stepData.title;
-      tutorSpeech.innerHTML = stepData.speech;
-      hintText.textContent = stepData.hint;
-      stepCounter.textContent = `Passo ${stepNum} di 5`;
-
-      // Abilita fine turno solo nello step 4
-      if (stepNum === 4) {
-        endTurnBtn.disabled = false;
-        endTurnBtn.className = 'px-5 py-2 rounded-xl text-xs font-extrabold uppercase tracking-wider bg-amber-500 hover:bg-amber-400 text-slate-950 cursor-pointer border border-amber-300 transition shadow-lg shadow-amber-500/30 target-highlight flex items-center gap-2';
-      }
-
-      renderHand();
-    }
-
-    // Restart
-    function restartTutorial() {
-      state = {
-        turn: 1,
-        inkTotal: 0,
-        inkAvailable: 0,
-        inkedThisTurn: false,
-        hand: ['charlotte', 'qui', 'qua', 'giaguaro', 'tiana'],
-        battlefield: [],
-        inkwell: [],
-        selectedCardId: null,
-        currentStep: 1
-      };
-      currentTurnBadge.textContent = '1';
-      deckCountText.textContent = '53';
-      completionModal.classList.add('hidden');
-      inspectModal.classList.add('hidden');
-      endTurnBtn.disabled = true;
-      endTurnBtn.className = 'px-5 py-2 rounded-xl text-xs font-bold uppercase tracking-wider bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700 transition flex items-center gap-2';
-
-      renderHand();
-      renderInkwell();
-      renderBattlefield();
-      advanceToStep(1);
-    }
-
-    document.getElementById('restartTutorialBtn').addEventListener('click', restartTutorial);
-    document.getElementById('modalRestartBtn').addEventListener('click', restartTutorial);
-
-    // Audio Toggle
-    const toggleAudioBtn = document.getElementById('toggleAudioBtn');
-    const audioStatusText = document.getElementById('audioStatusText');
-    toggleAudioBtn.addEventListener('click', () => {
-      sfx.enabled = !sfx.enabled;
-      audioStatusText.textContent = sfx.enabled ? 'ON' : 'OFF';
-      audioStatusText.className = sfx.enabled ? 'text-emerald-400 font-bold' : 'text-slate-500 font-bold';
+      }, 700);
     });
 
-    // Avvio iniziale
-    renderHand();
-    renderInkwell();
-    renderBattlefield();
-    advanceToStep(1);
+    // Mostra Modale Completamento
+    function showChapterComplete() {
+      const cfg = CHAPTERS_CONFIG[currentChapterId];
+      document.getElementById('completeChapterTitle').textContent = `${cfg.title.toUpperCase()} COMPLETATO!`;
+      document.getElementById('completeChapterSubtitle').textContent = cfg.subtitle;
+
+      const summaryContainer = document.getElementById('completeChapterSummary');
+      summaryContainer.innerHTML = '';
+      cfg.summary.forEach(point => {
+        const item = document.createElement('div');
+        item.className = 'flex items-start gap-2';
+        item.innerHTML = `<span class="text-emerald-400 font-bold shrink-0">✓</span><span>${point}</span>`;
+        summaryContainer.appendChild(item);
+      });
+
+      const nextBtn = document.getElementById('nextChapterBtn');
+      if (currentChapterId === 5) {
+        nextBtn.textContent = '🎉 Corso Didattico Completato!';
+      } else {
+        nextBtn.textContent = `Prosegui al Capitolo ${currentChapterId + 1} →`;
+      }
+
+      document.getElementById('completionModal').classList.remove('hidden');
+    }
+
+    // Toggle Audio
+    document.getElementById('toggleAudioBtn').addEventListener('click', () => {
+      sfx.enabled = !sfx.enabled;
+      const txt = document.getElementById('audioStatusText');
+      txt.textContent = sfx.enabled ? 'ON' : 'OFF';
+      txt.className = sfx.enabled ? 'text-emerald-400 font-bold' : 'text-slate-500 font-bold';
+    });
+
+    // Avvio iniziale (Capitolo 1)
+    switchChapter(1);
   </script>
 </body>
 </html>
